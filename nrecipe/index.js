@@ -1,10 +1,10 @@
 var template = require('./template')
 
-var reroute = function(req, res, path) {
+function reroute (req, res, path) {
   view(req, res, path)
 }
 
-var view = function(req, res, path) {
+function view (req, res, path) {
   res.send(template.process('index'))
 }
 

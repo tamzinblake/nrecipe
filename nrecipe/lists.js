@@ -3,7 +3,7 @@ var template = require('./template')
   , routes = { view : view
              }
 
-var reroute = function(req, res, path) {
+function reroute (req, res, path) {
   var route = routes[path[2]]
   if (route == undefined) {
     route = error.reroute
@@ -11,7 +11,7 @@ var reroute = function(req, res, path) {
   route(req, res, path)
 }
 
-var view = function(req, res, path) {
+function view (req, res, path) {
   res.send(template.process('lists'))
 }
 

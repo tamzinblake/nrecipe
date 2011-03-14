@@ -7,7 +7,7 @@ var routes = { index       : require('./index')
              , units       : require('./units')
              }
 
-var reroute = function(req, res) {
+function reroute (req, res) {
   var path = split_params(req.params[0])
     , route = routes[path[1]]
 
@@ -18,7 +18,7 @@ var reroute = function(req, res) {
   route.reroute(req,res,path)
 }
 
-var split_params = function(params) {
+function split_params (params) {
   if (params == undefined) {
     return ['','index']
   }

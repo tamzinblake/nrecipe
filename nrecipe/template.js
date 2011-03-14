@@ -9,7 +9,7 @@ var templates = { index : function() { return 'this is an index' }
                 , recipes : function() { return 'recipes page' }
                 }
 
-var process = function(template, vars) {
+function process (template, vars) {
   return yajet.compile(templates[template || 'error']())(vars)
 }
 
