@@ -1,4 +1,4 @@
-var template = require(./template)
+var template = require('./template')
 
 var reroute = function(req, res, path) {
   view(req, res, path)

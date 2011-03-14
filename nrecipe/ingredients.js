@@ -1,5 +1,5 @@
-var template = require(./template)
-  , error = require(./error)
+var template = require('./template')
+  , error = require('./error')
   , routes = { view : view
              }
 
