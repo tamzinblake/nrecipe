@@ -1,4 +1,4 @@
-var y = require('../yajet');
+var y = require('../lib/yajet');
 
 var yajet = new y.YAJET({})
 
