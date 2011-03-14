@@ -15,7 +15,7 @@ var reroute = function(req, res) {
     route = routes['error']
   }
 
-  route.route(req,res,path)
+  route.reroute(req,res,path)
 }
 
 var split_params = function(params) {
