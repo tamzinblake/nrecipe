@@ -8,7 +8,7 @@ var reroute = function(req, res, path) {
   if (route == undefined) {
     route = error.reroute
   }
-  route(req, req, path)
+  route(req, res, path)
 }
 
 var view = function(req, res, path) {
