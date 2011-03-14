@@ -7,6 +7,7 @@ var templates = { index : function() { return 'this is an index' }
                 , ingredients : function() { return 'ingredients page' }
                 , lists : function() { return 'lists page' }
                 , recipes : function() { return 'recipes page' }
+                , units : function() { return 'units page' }
                 }
 
 function process (template, vars) {
