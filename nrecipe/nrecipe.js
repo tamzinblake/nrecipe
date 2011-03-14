@@ -1,32 +1,33 @@
 var template = require('./template')
+var index = require('./index')
 
 var routes =
-  { 'index' : { name: 'index'
-              , type: 'template'
-              }
-  , 'error' : { name: 'error'
-              , type: 'template'
-              }
-  }
-
-var paths =
-  { '/' : 'index'
-  , '/foo' : 'index'
+  { '/' : index.view
+  , '/404' : error
   }
 
 var reroute = function(req, res) {
-  var rv
-    , path = req.params[0] || '/'
-    , route = routes[paths[path]]
+  var path = split_params(req.params[0])
+    , route = routes[path[0]]
 
   if (route == undefined) {
-    route = routes['error']
+    route = routes['/404']
   }
 
-  if (route.type == 'template') {
-    rv = template.process(route.name)
+  route(req,res,path)
+}
+
+var split_params = function(params) {
+  if (params == undefined) {
+    return ['/']
   }
-  res.send(rv)
+  else {
+    return params.split(/\//)
+  }
+}
+
+var error = function(req, res, path) {
+  res.send('404 not found')
 }
 
 this.reroute = reroute
