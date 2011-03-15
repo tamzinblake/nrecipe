@@ -1,0 +1,10 @@
+$(IMPORT (header))
+$(IMPORT (extjs))
+$(IMPORT (footer))
+$(WRAP header()
+${ extjs() }
+<script type="text/javascript" src="/nrecipe/js/recipeListWindow.js?${new Date().valueOf()}"></script>
+<script type="text/javascript" src="/nrecipe/js/ingredientListWindow.js?${new Date().valueOf()}"></script>
+<script type="text/javascript" src="/nrecipe/js/listSetup.js?${new Date().valueOf()}"></script>
+$)
+${ footer() }
