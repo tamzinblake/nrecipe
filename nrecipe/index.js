@@ -5,7 +5,7 @@ function reroute (req, res, path) {
 }
 
 function view (req, res, path) {
-  res.send(template.process('index'))
+  res.send(template.process('index', {title: 'List creator'}))
 }
 
 this.reroute = reroute

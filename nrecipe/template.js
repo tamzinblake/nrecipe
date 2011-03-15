@@ -1,17 +1,30 @@
-var y = require('../lib/yajet')
-  , yajet = new y.YAJET({})
+var siteConfig = require('./siteConfig')
+  , y = require('../lib/yajet')
+  , yajet = new y.YAJET()
+  , fs = require('fs')
 
-var templates = { index : function() { return 'this is an index' }
-                , error : function() { return '404 not found' }
-                , bugs : function() { return 'bugs page' }
-                , ingredients : function() { return 'ingredients page' }
-                , lists : function() { return 'lists page' }
-                , recipes : function() { return 'recipes page' }
-                , units : function() { return 'units page' }
-                }
+var templates = 
+  { index       : function() { return readTemplate('index') }
+  , error       : function() { return '404 not found' }
+  , bugs        : function() { return readTemplate('bugs') }
+  , ingredients : function() { return readTemplate('ingredients') }
+  , lists       : function() { return readTemplate('lists') }
+  , recipes     : function() { return readTemplate('recipes') }
+  , units       : function() { return readTemplate('units') }
+  }
 
-function process (template, vars) {
+function process (template, vars, ext) {
+  yajet.compile(readTemplate('header'))
+  yajet.compile(readTemplate('footer'))
+  if (ext) {
+    yajet.compile(readTemplate('extjs'))
+  }
   return yajet.compile(templates[template || 'error']())(vars)
+}
+
+function readTemplate (name) {
+  var filename = siteConfig.templateRoot + name + '.jt'
+  return fs.readFileSync(filename, 'utf8')
 }
 
 this.process = process

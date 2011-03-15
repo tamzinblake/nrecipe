@@ -1,0 +1,6 @@
+$(IMPORT (header))
+$(IMPORT (footer))
+$(WRAP header()
+$)
+This is the index page.
+${ footer() }

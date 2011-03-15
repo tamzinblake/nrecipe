@@ -3,6 +3,7 @@ var routes = { index       : require('./index')
              , error       : require('./error')
              , ingredients : require('./ingredients')
              , lists       : require('./lists')
+             , js          : require('./sendfile')
              , recipes     : require('./recipes')
              , units       : require('./units')
              }
@@ -14,7 +15,6 @@ function reroute (req, res) {
   if (route == undefined) {
     route = routes['error']
   }
-
   route.reroute(req,res,path)
 }
 

@@ -12,7 +12,7 @@ function reroute (req, res, path) {
 }
 
 function view (req, res, path) {
-  res.send(template.process('recipes'))
+  res.send(template.process('recipes', {title: 'Recipe manager'}, true))
 }
 
 this.reroute = reroute
