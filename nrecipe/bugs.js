@@ -3,6 +3,8 @@ var template = require('./template')
   , dbi = require('./dbi')
   , routes = { view : view
              , list : list
+             , replace : replace
+             , remove : remove
              }
 
 function reroute (req, res, path, db) {
@@ -19,17 +21,41 @@ function view (req,res,path,db) {
 
 function list (req,res,path,db) {
   var bugs = db.collection('bugs')
-  
   dbi.fetch( bugs
-           , { start: req.query.start
-             , limit: req.query.limit || 50
-             , dir: req.query.dir == 'DESC' ? -1 : 1
-             , sort: req.query.sort
+           , { start: req.body.start
+             , limit: req.body.limit || 50
+             , dir  : req.body.dir == 'DESC' ? -1 : 1
+             , sort : req.body.sort
              }
            , function (response) {
                res.send(response)
              }
            )
+}
+
+function replace (req,res,path,db) {
+  var bugs = db.collection('bugs')
+  bugs.save( { _id: dbi.ObjectID(req.body._id) || undefined
+             , description: req.body.description
+             , name: req.body.name
+             , type: req.body.type
+             }
+           , function (err) {
+               if (err != null) console.log(err)
+               res.send({success: err == null})
+             }
+           )
+}
+
+function remove (req,res,path,db) {
+  var bugs = db.collection('bugs')
+  bugs.remove( { _id: dbi.ObjectID(req.body._id)
+               }
+             , function (err) {
+                 if (err != null) console.log(err)
+                 res.send({success: err == null})
+               }
+             )
 }
 
 this.reroute = reroute

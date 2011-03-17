@@ -18,7 +18,7 @@ Ext.onReady(function () {
     , idProperty: '_id'
     , listeners: { exception: failureStore
                  }
-    , sortInfo: { field: 'id'
+    , sortInfo: { field: '_id'
                 , direction: 'ASC'
                 }
     } )
@@ -53,14 +53,14 @@ Ext.onReady(function () {
   deleteButton.on('click', function () {
     if (store.selectedRecord) {
       Ext.Ajax.request(
-        { url: '/nrecipe/bugs/delete'
+        { url: '/nrecipe/bugs/remove'
         , success: function (response,options) {
             if (successAjax(response,options)) {
               loadStore()
             }
           }
         , failure: failureAjax
-        , params: { id: store.selectedRecord.data.id
+        , params: { _id: store.selectedRecord.data._id
                   }
         } )
     }

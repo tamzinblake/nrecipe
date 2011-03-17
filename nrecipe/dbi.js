@@ -1,3 +1,5 @@
+this.ObjectID = require('../lib/mongolian').bson.ObjectID
+
 function fetch (collection, config, callback) {
   var callbacks = 0
     , response = { success: true }
@@ -18,7 +20,7 @@ function fetch (collection, config, callback) {
   } )
 
   function respond(err) {
-    if (err != undefined) {
+    if (err != null) {
       console.log(err)
       callbacks = 2
       response = { success    : false

@@ -1,4 +1,4 @@
-var Mongolian = require('mongolian')
+var Mongolian = require('../lib/mongolian')
   , routes = { index       : require('./index')
              , bugs        : require('./bugs')
              , error       : require('./error')

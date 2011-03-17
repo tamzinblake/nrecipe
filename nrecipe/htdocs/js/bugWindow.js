@@ -1,5 +1,5 @@
-AddComboBox = Ext.extend(Ext.form.ComboBox,
-  { onLoad : function () {
+AddComboBox = Ext.extend(Ext.form.ComboBox
+ ,{ onLoad : function () {
       if (!this.hasFocus) {
         return
       }
@@ -62,8 +62,8 @@ function bugWindowFactory(config){ with(config){
     , fieldLabel: 'Type'
     } )
 
-  var field_set = new Ext.form.FieldSet(
-    { border: false,
+  var fieldSet = new Ext.form.FieldSet(
+    { border: false
     , style: { marginTop: '10px'
              , marginBottom: '0px'
              , paddingBottom: '0px'
@@ -73,7 +73,7 @@ function bugWindowFactory(config){ with(config){
               }
     , defaults: { xtype: 'textfield'
                 }
-    , items: [ { id: 'id'
+    , items: [ { id: '_id'
                , xtype: 'hidden'
                }
              , { id: 'name'
@@ -92,28 +92,27 @@ function bugWindowFactory(config){ with(config){
   var closeButton = new Ext.Button(
     { text: 'Cancel'
     , handler: function(){
-        editWindow.fireEvent('go_finished')
+        editWindow.fireEvent('goFinished')
       }
     } )
 
   var editPanel = new Ext.form.FormPanel(
     { buttonAlign: 'center'
-    , items: [ field_set
+    , items: [ fieldSet
              ]
     , buttons: [ closeButton
                , { text: 'Submit'
                  , handler: function () {
                      editPanel.getForm().submit(
-                       { url: '/recipe/admin/bugs/replace'
-                       , params: { oper: oper
-                                 }
-                       , failure: failure_form
+                       { url: '/nrecipe/bugs/replace'
+                       , params: {}
+                       , failure: failureForm
                        , success: function(form, action) {
                            if (editWindow.state =='editing') {
-                             editWindow.fireEvent('go_finished')
+                             editWindow.fireEvent('goFinished')
                            }
                            else if (editWindow.state =='adding') {
-                             editWindow.fireEvent('go_adding')
+                             editWindow.fireEvent('goAdding')
                            }
                          }
                        } )
@@ -133,48 +132,47 @@ function bugWindowFactory(config){ with(config){
     , closeAction: 'hide'
     , items: editPanel
     , openAdd: function () {
-        editWindow.fireEvent('go_loading', 'go_adding')
+        editWindow.fireEvent('goLoading', 'goAdding')
       }
     , openEdit: function () {
-        editWindow.fireEvent('go_loading', 'go_editing')
+        editWindow.fireEvent('goLoading', 'goEditing')
       }
     } )
 
-  editWindow.addEvents({
-    'go_adding' : true,
-    'go_editing' : true,
-    'go_loading' : true,
-    'go_finished' : true
-  } )
+  editWindow.addEvents( { 'goAdding'   : true
+                        , 'goEditing'  : true
+                        , 'goLoading'  : true
+                        , 'goFinished' : true
+                        } )
 
   editWindow.loaded = 0
-  editWindow.addListener('go_loading',function(next){
+  editWindow.addListener('goLoading',function(next){
     if (editWindow.state == 'loading' && editWindow.loaded < 2){
       editWindow.loaded++
     }
     else if (editWindow.state != 'loading') {
       editWindow.state = 'loading'
       editWindow.loaded = 0
-      editWindow.fireEvent('go_loading',next)
-      editWindow.fireEvent('go_loading',next)
-      editWindow.fireEvent('go_loading',next)
+      editWindow.fireEvent('goLoading',next)
+      editWindow.fireEvent('goLoading',next)
+      editWindow.fireEvent('goLoading',next)
     }
     else {
       editWindow.fireEvent(next)
     }
   } )
 
-  editWindow.addListener('go_adding', function () {
+  editWindow.addListener('goAdding', function () {
     editWindow.show()
     editPanel.getForm().reset()
     loadStore()
     editWindow.state = 'adding'
     closeButton.setText('Close')
     editWindow.setTitle('Add')
-    editPanel.items.id=null
+    editPanel.items._id=null
   } )
 
-  editWindow.addListener('go_editing', function () {
+  editWindow.addListener('goEditing', function () {
     editWindow.show()
     editWindow.state = 'editing'
     closeButton.setText('Cancel')
@@ -182,7 +180,7 @@ function bugWindowFactory(config){ with(config){
     editPanel.getForm().loadRecord(getSelected())
   } )
 
-  editWindow.addListener('go_finished', function () {
+  editWindow.addListener('goFinished', function () {
     editWindow.state = 'finished'
     editWindow.hide()
     loadStore()
