@@ -1,5 +1,6 @@
 var template = require('./template')
   , error = require('./error')
+  , util = require('../lib/util')
   , dbi = require('./dbi')
   , routes = { view : view
              , list : list
@@ -35,10 +36,12 @@ function list (req,res,path,db) {
 
 function replace (req,res,path,db) {
   var bugs = db.collection('bugs')
+    , modified = util.dateTime()
   bugs.save( { _id: dbi.ObjectID(req.body._id) || undefined
              , description: req.body.description
              , name: req.body.name
              , type: req.body.type
+             , modified: modified
              }
            , function (err) {
                if (err != null) console.log(err)

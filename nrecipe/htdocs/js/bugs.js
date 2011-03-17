@@ -2,11 +2,11 @@ Ext.onReady(function () {
   var body = Ext.getBody()
 
   var Record = Ext.data.Record.create(
-    [ {name: '_id',          sortType: notNull}
+    [ {name: '_id',         sortType: notNull}
     , {name: 'name',        sortType: notNull}
     , {name: 'type',        sortType: notNull}
     , {name: 'description', sortType: notNull}
-    , {name: 'create_date', sortType: notNull}
+    , {name: 'modified',    sortType: notNull}
     ] )
 
   var store = new Ext.data.JsonStore(
@@ -122,9 +122,9 @@ Ext.onReady(function () {
                  , dataIndex: 'description'
                  , sortable : false
                  }
-               , { header   : 'Created'
+               , { header   : 'Modified'
                  , width    : 160
-                 , dataIndex: 'create_date'
+                 , dataIndex: 'modified'
                  , sortable : true
                  } ]
     , defaults: { renderer : 'htmlEncode'
