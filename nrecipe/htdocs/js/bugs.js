@@ -2,12 +2,13 @@ Ext.onReady(function () {
   var body = Ext.getBody()
 
   var Record = Ext.data.Record.create(
-    [ {name: '_id',         sortType: notNull}
-    , {name: 'name',        sortType: notNull}
-    , {name: 'type',        sortType: notNull}
+    [ {name: '_id'        , sortType: notNull}
+    , {name: 'name'       , sortType: notNull}
+    , {name: 'type'       , sortType: notNull}
     , {name: 'description', sortType: notNull}
-    , {name: 'modified',    sortType: notNull}
-    ] )
+    , {name: 'modified'   , sortType: notNull}
+    ]
+  )
 
   var store = new Ext.data.JsonStore(
     { url: '/nrecipe/bugs/list'
@@ -21,7 +22,8 @@ Ext.onReady(function () {
     , sortInfo: { field: '_id'
                 , direction: 'ASC'
                 }
-    } )
+    }
+  )
 
   store.storeLoaded = false
 
@@ -30,25 +32,29 @@ Ext.onReady(function () {
         return store.selectedRecord
       }
     , loadStore: loadStore
-    } )
+    }
+  )
 
   var addButton = new Ext.Button(
     { text: 'New bug'
     , listeners: { click: editWindow.openAdd
                  }
-    } )
+    }
+  )
 
   var editButton = new Ext.Button(
     { text: 'Edit bug'
     , disabled: true
     , listeners: { click: doEdit
                  }
-    } )
+    }
+  )
 
   var deleteButton = new Ext.Button(
     { text: 'Delete'
     , disabled: true
-    } )
+    }
+  )
 
   deleteButton.on('click', function () {
     if (store.selectedRecord) {
@@ -62,7 +68,8 @@ Ext.onReady(function () {
         , failure: failureAjax
         , params: { _id: store.selectedRecord.data._id
                   }
-        } )
+        }
+      )
     }
     clearSelection()
   } )
@@ -104,7 +111,8 @@ Ext.onReady(function () {
     , stateEvents: [ 'change'
                    , 'select'
                    ]
-    } )
+    }
+  )
 
   var model = new Ext.grid.ColumnModel(
     { columns: [ { header   : 'Name'
@@ -126,10 +134,12 @@ Ext.onReady(function () {
                  , width    : 160
                  , dataIndex: 'modified'
                  , sortable : true
-                 } ]
+                 }
+               ]
     , defaults: { renderer : 'htmlEncode'
                 }
-    } )
+    }
+  )
 
   var gridSelectionModel = new Ext.grid.RowSelectionModel(
     { singleSelect: true
@@ -147,7 +157,8 @@ Ext.onReady(function () {
             }
           }
         }
-    } )
+    }
+  )
 
   var grid = new Ext.grid.GridPanel(
     { store: store
@@ -178,7 +189,8 @@ Ext.onReady(function () {
                )
             }
         }
-    } )
+    }
+  )
 
   loadStore()
 
@@ -188,7 +200,8 @@ Ext.onReady(function () {
     , autoWidth: true
     , renderTo: body
     , items: [grid]
-    } )
+    }
+  )
 
   viewport.render()
 
@@ -215,6 +228,7 @@ Ext.onReady(function () {
     store.load( { callback: function () {
                     store.storeLoaded = true
                   }
-                } )
+                }
+              )
   }
 } )

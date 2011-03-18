@@ -1,5 +1,5 @@
-AddComboBox = Ext.extend(Ext.form.ComboBox,
-  { onLoad : function () {
+AddComboBox = Ext.extend(Ext.form.ComboBox
+ ,{ onLoad : function () {
       if (!this.hasFocus) {
         return
       }
@@ -34,4 +34,5 @@ AddComboBox = Ext.extend(Ext.form.ComboBox,
         this.el.focus()
       }
     }
-  } )
+  }
+)

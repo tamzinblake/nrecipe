@@ -1,21 +1,16 @@
-var selectedRecord
-  , editWindow
-  , oper
-  , storeLoaded = false
-
 var notNull = function (val) {
-    return val ? val : ''
+  return val ? val : ''
 }
 
 Ext.onReady(function () {
   var body = Ext.getBody()
 
   var Record = Ext.data.Record.create
-    ([ {name: 'id',         mapping: 0, type: 'int', sortType: notNull}
-     , {name: 'name',       mapping: 1, sortType: notNull}
-     , {name: 'type',       mapping: 2, sortType: notNull}
-     , {name: 'conversion', mapping: 3, sortType: notNull}
-     ]
+    ( [ {name: 'id'        , mapping: 0, sortType: notNull}
+      , {name: 'name'      , mapping: 1, sortType: notNull}
+      , {name: 'type'      , mapping: 2, sortType: notNull}
+      , {name: 'conversion', mapping: 3, sortType: notNull}
+      ]
     )
 
   var reader = new Ext.data.JsonReader
@@ -45,7 +40,7 @@ Ext.onReady(function () {
 
   var editWindow = unitWindowFactory
     ( { getSelected: function () {
-	  return selectedRecord
+    return store.selectedRecord
         }
       , loadStore: loadStore
       }
@@ -60,8 +55,8 @@ Ext.onReady(function () {
       }
     )
 
-  function doEdit() {
-    if (selectedRecord) {
+  function doEdit () {
+    if (store.selectedRecord) {
       editWindow.openEdit()
     }
   }
@@ -80,31 +75,31 @@ Ext.onReady(function () {
     }
   )
 
-  deleteButton.on('click', function(){
-    if (selectedRecord) {
+  deleteButton.on('click', function () {
+    if (store.selectedRecord) {
       Ext.Ajax.request(
         { url: '/recipe/admin/units/delete'
-        , success: function(response,options) {
+        , success: function (response,options) {
             if (success_ajax(response,options)) {
               loadStore()
             }
           }
         , failure: failure_ajax
         , params:
-          { id: selectedRecord.data.id
+          { id: store.selectedRecord.data.id
           }
         }
       )
     }
     clearSelection()
-  })
+  } )
 
-  function clearSelection() {
+  function clearSelection () {
     if (grid) {
       grid.getSelectionModel().clearSelections()
       grid.getSelectionModel().fireEvent('rowdeselect')
     }
-    selectedRecord = null
+    store.selectedRecord = null
   }
 
   var pagingBar = new Ext.StatefulPagingToolbar
@@ -117,14 +112,14 @@ Ext.onReady(function () {
       , stateful: true
       , stateEvents: ['change','select']
       , listeners:
-        { staterestore: function(){
-          store.setBaseParam('start',this.cursor)
-          loadStore()
+        { staterestore: function () {
+            store.setBaseParam('start',this.cursor)
+            loadStore()
+          }
+        , select: function () { //handles selects from the filterCombo
+            this.cursor = 0
+          }
         }
-        , select: function(){ //handles selects from the filterCombo
-          this.cursor = 0
-        }
-      }
       , items: [ '<a href="/recipe/index.html">Back to menu</a>'
                , '-'
                , addButton
@@ -142,11 +137,12 @@ Ext.onReady(function () {
     )
 
   function loadStore () {
-    storeLoaded = false
-    store.load ( { callback: function() {
-                     storeLoaded = true
+    store.storeLoaded = false
+    store.load ( { callback: function () {
+                     store.storeLoaded = true
                    }
-                 } )
+                 }
+               )
   }
 
   var model = new Ext.grid.ColumnModel
@@ -175,13 +171,13 @@ Ext.onReady(function () {
   var gridSelectionModel = new Ext.grid.RowSelectionModel
     ( { singleSelect: true
       , listeners: { rowdeselect: function (sm, rowIndex, r) {
-                       selectedRecord = null
+                       store.selectedRecord = null
                        deleteButton.disable()
                        editButton.disable()
                      }
                    , rowselect: function (sm, rowIndex, r) {
-                       selectedRecord = r
-                       if (selectedRecord) {
+                       store.selectedRecord = r
+                       if (store.selectedRecord) {
                          deleteButton.enable()
                          editButton.enable()
                        }
@@ -205,15 +201,16 @@ Ext.onReady(function () {
           rowdblclick: doEdit
         }
       , viewConfig: { forceFit: true
-                    , getRowClass: function(record, rowIndex, rp, ds){
+                    , getRowClass: function (record, rowIndex, rp, ds) {
                         return 'foo'
                       }
-                    , templates: 
+                    , templates:
                       { cell: new Ext.Template
-                        ( '<td class="x-grid3-col x-grid3-cell x-grid3-td-{id} '
+                        ( '<td class="x-grid3-col x-grid3-cell '
+                        + 'x-grid3-td-{id} '
                         + 'x-selectable {css}" style="{style}" '
                         + 'tabIndex="0" {cellAttr}>'
-		        , '<div class="x-grid3-cell-inner x-grid3-col-{id}" '
+                        , '<div class="x-grid3-cell-inner x-grid3-col-{id}" '
                         + '{attr}>{value}</div>'
                         , '</td>'
                         )
@@ -234,4 +231,4 @@ Ext.onReady(function () {
     )
 
   viewport.render()
-})
+} )

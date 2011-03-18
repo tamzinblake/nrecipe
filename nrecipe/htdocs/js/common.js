@@ -15,8 +15,8 @@ userWindowGroup.zseed = 9000
 //Implementations of state handler methods
 //
 
-Ext.form.StatefulFilterBox = Ext.extend(Ext.form.ComboBox,
-  { getState: function(){
+Ext.form.StatefulFilterBox = Ext.extend(Ext.form.ComboBox
+ ,{ getState: function(){
       return this.getValue()
     }
   , applyState: function(state){
@@ -26,8 +26,8 @@ Ext.form.StatefulFilterBox = Ext.extend(Ext.form.ComboBox,
     }
   } )
 
-Ext.StatefulPagingToolbar = Ext.extend(Ext.PagingToolbar,
-  { getState: function () {
+Ext.StatefulPagingToolbar = Ext.extend(Ext.PagingToolbar
+ ,{ getState: function () {
       return this.cursor
     }
   , applyState: function (state) {
@@ -39,8 +39,8 @@ Ext.StatefulPagingToolbar = Ext.extend(Ext.PagingToolbar,
 //Extjs cookie-based state session provider
 //
 
-Ext.state.SessionProvider = Ext.extend(Ext.state.CookieProvider,
-  { readCookies : function () {
+Ext.state.SessionProvider = Ext.extend(Ext.state.CookieProvider
+ ,{ readCookies : function () {
       if (this.state) {
         for (var k in this.state) {
           if (typeof this.state[k] == 'string') {

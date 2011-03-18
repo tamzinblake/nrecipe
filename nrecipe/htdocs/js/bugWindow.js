@@ -1,43 +1,3 @@
-AddComboBox = Ext.extend(Ext.form.ComboBox
- ,{ onLoad : function () {
-      if (!this.hasFocus) {
-        return
-      }
-      if (this.store.getCount() > 0) {
-        this.expand()
-        this.restrictHeight()
-        if (this.lastQuery == this.allQuery) {
-          if (this.editable) {
-            this.el.dom.select()
-          }
-        }
-        else {
-          if ( this.typeAhead
-            && this.lastKey != Ext.EventObject.BACKSPACE
-            && this.lastKey != Ext.EventObject.DELETE) {
-              this.taTask.delay(this.typeAheadDelay)
-          }
-        }
-      }
-      else {
-        this.onEmptyResults()
-      }
-    }
-  , onViewClick : function (doFocus) {
-      var index = this.view.getSelectedIndexes()[0]
-      var r = this.store.getAt(index)
-      if (r) {
-        this.onSelect(r, index)
-      }
-      else {
-        this.collapse()
-      }
-      if (doFocus !== false) {
-        this.el.focus()
-      }
-    }
-  } )
-
 function bugWindowFactory(config){ with(config){
   Ext.QuickTips.init()
   var typeStore = new Ext.data.ArrayStore(
@@ -46,7 +6,8 @@ function bugWindowFactory(config){ with(config){
             , ['Feature request','feature']
             , ['Notice','notice']
             ]
-    } )
+    }
+  )
 
   var typeCombo = new Ext.form.ComboBox(
     { store: typeStore
@@ -60,7 +21,8 @@ function bugWindowFactory(config){ with(config){
     , forceSelection: true
     , id: 'type_col'
     , fieldLabel: 'Type'
-    } )
+    }
+  )
 
   var fieldSet = new Ext.form.FieldSet(
     { border: false
@@ -87,14 +49,16 @@ function bugWindowFactory(config){ with(config){
                , fieldLabel: 'Description'
                }
              ]
-    } )
+    }
+  )
 
   var closeButton = new Ext.Button(
     { text: 'Cancel'
     , handler: function(){
         editWindow.fireEvent('goFinished')
       }
-    } )
+    }
+  )
 
   var editPanel = new Ext.form.FormPanel(
     { buttonAlign: 'center'
@@ -115,11 +79,13 @@ function bugWindowFactory(config){ with(config){
                              editWindow.fireEvent('goAdding')
                            }
                          }
-                       } )
+                       }
+                     )
                    }
                  }
                ]
-    } )
+    }
+  )
 
   var editWindow = new Ext.Window(
     { width: 550
@@ -137,13 +103,15 @@ function bugWindowFactory(config){ with(config){
     , openEdit: function () {
         editWindow.fireEvent('goLoading', 'goEditing')
       }
-    } )
+    }
+  )
 
   editWindow.addEvents( { 'goAdding'   : true
                         , 'goEditing'  : true
                         , 'goLoading'  : true
                         , 'goFinished' : true
-                        } )
+                        }
+                      )
 
   editWindow.loaded = 0
   editWindow.addListener('goLoading',function(next){

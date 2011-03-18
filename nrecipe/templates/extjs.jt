@@ -8,4 +8,5 @@ $(IF (this.extStash != undefined)
 </script>
 $)
 <script type="text/javascript" src="/nrecipe/js/common.js?${new Date().valueOf()}"></script>
+<script type="text/javascript" src="/nrecipe/js/addComboBox.js?${new Date().valueOf()}"></script>
 $)
