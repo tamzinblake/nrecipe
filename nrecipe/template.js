@@ -16,7 +16,7 @@ var templates =
 function process (template, vars, ext) {
   yajet.compile(readTemplate('header'))
   yajet.compile(readTemplate('footer'))
-  if (ext) {
+  if (ext == 'extjs') {
     yajet.compile(readTemplate('extjs'))
   }
   return yajet.compile(templates[template || 'error']())(vars)

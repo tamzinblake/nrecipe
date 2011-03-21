@@ -17,7 +17,7 @@ function reroute (req, res, path, db) {
 }
 
 function view (req,res,path,db) {
-  res.send(template.process('bugs', {title: 'Bug tracker'}, true))
+  res.send(template.process('bugs', {title: 'Bug tracker'}, 'extjs'))
 }
 
 function list (req,res,path,db) {

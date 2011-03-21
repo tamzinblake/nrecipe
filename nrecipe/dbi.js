@@ -1,4 +1,4 @@
-this.ObjectID = require('../lib/mongolian').bson.ObjectID
+this.ObjectID = require('../lib/mongolian').ObjectID
 
 function fetch (collection, config, callback) {
   var callbacks = 0
