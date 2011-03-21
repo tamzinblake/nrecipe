@@ -1,12 +1,8 @@
-var selectedRecord
-var editWindow
-var oper
-var storeLoaded = false
-var notNull = function (val) {
+function notNull (val) {
   return val ? val : ''
 }
 
-Ext.onReady(function(){
+Ext.onReady(function () {
   var body = Ext.getBody()
 
   var Record = Ext.data.Record.create(
@@ -42,7 +38,7 @@ Ext.onReady(function(){
 
   var editWindow = recipeWindowFactory(
     { getSelected: function () {
-        return selectedRecord
+        return store.selectedRecord
       }
     , loadStore:loadStore
     }
@@ -59,7 +55,7 @@ Ext.onReady(function(){
   )
 
   function doEdit () {
-    if (selectedRecord) {
+    if (store.selectedRecord) {
       editWindow.openEdit()
     }
   }
@@ -79,7 +75,7 @@ Ext.onReady(function(){
   )
 
   deleteButton.on('click', function () {
-    if (selectedRecord) {
+    if (store.selectedRecord) {
       Ext.Ajax.request(
         { url: '/nrecipe/recipes/delete'
         , success: function (response,options) {
@@ -88,7 +84,7 @@ Ext.onReady(function(){
             }
           }
         , failure: failure_ajax
-        , params: { id: selectedRecord.data.id
+        , params: { id: store.selectedRecord.data.id
                   }
         }
       )
@@ -103,8 +99,8 @@ Ext.onReady(function(){
   )
 
   var openRecipe = function () {
-    if (selectedRecord) {
-      window.location.href='/nrecipe/setup/view/'+selectedRecord.data.id
+    if (store.selectedRecord) {
+      window.location.href='/nrecipe/setup/view/'+store.selectedRecord.data.id
     }
   }
 
@@ -115,7 +111,7 @@ Ext.onReady(function(){
       grid.getSelectionModel().clearSelections()
       grid.getSelectionModel().fireEvent('rowdeselect')
     }
-    selectedRecord = null
+    store.selectedRecord = null
   }
 
   var pagingBar = new Ext.StatefulPagingToolbar(
@@ -126,7 +122,7 @@ Ext.onReady(function(){
     , prependButtons: true
     , stateId: 'paging_toolbarrecipes'
     , stateful: true
-    , stateEvents: ['change',select']
+    , stateEvents: ['change','select']
     , listeners:
         { staterestore: function () {
             store.setBaseParam('start',this.cursor)
@@ -157,10 +153,10 @@ Ext.onReady(function(){
   )
 
   function loadStore () {
-    storeLoaded = false
+    store.storeLoaded = false
     store.load(
       { callback: function () {
-          storeLoaded = true
+          store.storeLoaded = true
         }
       }
     )
@@ -188,14 +184,14 @@ Ext.onReady(function(){
     { singleSelect: true
     , listeners:
         { rowdeselect: function (sm,rowIndex,r) {
-            selectedRecord = null
+            store.selectedRecord = null
             deleteButton.disable()
             editButton.disable()
             openButton.disable()
           }
         , rowselect: function (sm,rowIndex,r) {
-            selectedRecord = r
-            if (selectedRecord) {
+            store.selectedRecord = r
+            if (store.selectedRecord) {
               deleteButton.enable()
               editButton.enable()
               openButton.enable()

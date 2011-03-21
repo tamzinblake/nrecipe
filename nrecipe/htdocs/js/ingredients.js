@@ -113,7 +113,7 @@ Ext.onReady(function () {
     , prependButtons: true
     , stateId: 'paging_toolbaringredients'
     , stateful: true
-    , stateEvents: ['change', select']
+    , stateEvents: ['change','select']
     , listeners:
         { staterestore: function () {
             store.setBaseParam('start',this.cursor)
