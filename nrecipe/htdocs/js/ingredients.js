@@ -6,7 +6,7 @@ Ext.onReady(function () {
   var body = Ext.getBody()
 
   var Record = Ext.data.Record.create(
-    [ {name: 'id'          , mapping: 0, sortType: notNull}
+    [ {name: '_id'          , mapping: 0, sortType: notNull}
     , {name: 'name'        , mapping: 1, sortType: notNull}
     , {name: 'density'     , mapping: 2, sortType: notNull}
     , {name: 'unit_id'     , mapping: 3, sortType: notNull}
@@ -16,26 +16,16 @@ Ext.onReady(function () {
     ]
   )
 
-  var reader = new Ext.data.JsonReader(
-    { root: 'rows'
-    , totalProperty: 'totalcount'
-    , id: 'id'
-    }
-  , Record
-  )
-
-  var store = new Ext.data.Store(
-    { proxy: new Ext.data.HttpProxy(
-        { api: { read: '/recipe/admin/ingredients/list'
-               }
-        , method : 'post'
-        }
-      )
-    , reader: reader
+  var store = new Ext.data.JsonStore(
+    { url: '/nrecipe/ingredients/list'
+    , fields: Record
     , remoteSort: true
-    , listeners: { exception: failure_store
+    , root: 'rows'
+    , totalProperty: 'totalcount'
+    , idProperty: '_id'
+    , listeners: { exception: failureStore
                  }
-    , sortInfo: { field: 'id'
+    , sortInfo: { field: '_id'
                 , direction: 'ASC'
                 }
     }
@@ -82,14 +72,14 @@ Ext.onReady(function () {
   deleteButton.on('click', function () {
     if (store.selectedRecord) {
       Ext.Ajax.request(
-        { url: '/recipe/admin/ingredients/delete'
+        { url: '/nrecipe/ingredients/remove'
         , success: function (response,options) {
             if (success_ajax(response,options)) {
               loadStore()
             }
           }
         , failure: failure_ajax
-        , params: { id: store.selectedRecord.data.id
+        , params: { _id: store.selectedRecord.data._id
                   }
         }
       )
@@ -124,7 +114,7 @@ Ext.onReady(function () {
             this.cursor = 0
           }
         }
-    , items: [ '<a href="/recipe/index.html">Back to menu</a>'
+    , items: [ '<a href="/nrecipe">Back to menu</a>'
              , '-'
              , addButton
              , '-'
@@ -259,7 +249,7 @@ function ingredientWindowFactory (config) { with (config) {
 
   var unitStore = new Ext.data.Store(
     { proxy: new Ext.data.HttpProxy(
-        { url: '/recipe/admin/units/search'
+        { url: '/nrecipe/units/search'
         , method : 'post'
         }
       )
@@ -294,7 +284,7 @@ function ingredientWindowFactory (config) { with (config) {
 
   var shopUnitStore = new Ext.data.Store(
     { proxy: new Ext.data.HttpProxy(
-        { url: '/recipe/admin/units/search'
+        { url: '/nrecipe/units/search'
         , method : 'post'
         }
       )
