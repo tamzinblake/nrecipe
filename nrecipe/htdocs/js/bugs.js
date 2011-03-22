@@ -254,7 +254,7 @@ function bugWindowFactory(config){ with(config){
     , anchor:'100%'
     , mode: 'local'
     , forceSelection: true
-    , id: 'type_col'
+    , id: 'typeCol'
     , fieldLabel: 'Type'
     }
   )

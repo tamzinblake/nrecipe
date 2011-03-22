@@ -4,7 +4,7 @@ $(EXPORT extjs ()
 <script type="text/javascript" src="/ext/ext-all.js"></script>
 $(IF (this.extStash != undefined)
 <script type="text/javascript">
-  var ext_stash = $this.extStash
+  var extStash = $this.extStash
 </script>
 $)
 <script type="text/javascript" src="/nrecipe/js/common.js?${new Date().valueOf()}"></script>
