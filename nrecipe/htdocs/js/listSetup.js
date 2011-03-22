@@ -6,58 +6,58 @@ Ext.onReady(function () {
   var body = Ext.getBody()
 
   var ingredientRecord = Ext.data.Record.create(
-    [ {name: 'ing_id'                     , sortType: notNull}
-    , {name: 'ing_ingredient_id'          , sortType: notNull}
-    , {name: 'ing_name'                   , sortType: notNull}
-    , {name: 'ing_density'                , sortType: notNull}
-    , {name: 'ing_default_unit_id'        , sortType: notNull}
-    , {name: 'ing_default_unit'           , sortType: notNull}
-    , {name: 'ing_default_unit_conversion', sortType: notNull}
-    , {name: 'ing_default_unit_type'      , sortType: notNull}
-    , {name: 'ing_shop_unit_id'           , sortType: notNull}
-    , {name: 'ing_shop_unit'              , sortType: notNull}
-    , {name: 'ing_shop_unit_conversion'   , sortType: notNull}
-    , {name: 'ing_shop_unit_type'         , sortType: notNull}
-    , {name: 'ing_unit_id'                , sortType: notNull}
-    , {name: 'ing_unit'                   , sortType: notNull}
-    , {name: 'ing_unit_conversion'        , sortType: notNull}
-    , {name: 'ing_unit_type'              , sortType: notNull}
-    , {name: 'ing_amount'                 , sortType: notNull}
+    [ {name: 'ingId'                   , sortType: notNull}
+    , {name: 'ingIngredientId'         , sortType: notNull}
+    , {name: 'ingName'                 , sortType: notNull}
+    , {name: 'ingDensity'              , sortType: notNull}
+    , {name: 'ingDefaultUnitId'        , sortType: notNull}
+    , {name: 'ingDefaultUnit'          , sortType: notNull}
+    , {name: 'ingDefaultUnitConversion', sortType: notNull}
+    , {name: 'ingDefaultUnitType'      , sortType: notNull}
+    , {name: 'ingShopUnitId'           , sortType: notNull}
+    , {name: 'ingShopUnit'             , sortType: notNull}
+    , {name: 'ingShopUnitConversion'   , sortType: notNull}
+    , {name: 'ingShopUnitType'         , sortType: notNull}
+    , {name: 'ingUnitId'               , sortType: notNull}
+    , {name: 'ingUnit'                 , sortType: notNull}
+    , {name: 'ingUnitConversion'       , sortType: notNull}
+    , {name: 'ingUnitType'             , sortType: notNull}
+    , {name: 'ingAmount'               , sortType: notNull}
     ]
   )
 
   var recipeRecord = Ext.data.Record.create(
-    [ {name: 'rec_id'    , sortType: notNull}
-    , {name: 'rec_name'  , sortType: notNull}
-    , {name: 'rec_amount', sortType: notNull}
+    [ {name: 'recId'    , sortType: notNull}
+    , {name: 'recName'  , sortType: notNull}
+    , {name: 'recAmount', sortType: notNull}
     ]
   )
 
   var shoppingRecord = Ext.data.Record.create(
-    [ {name: 'sho_id'                     , sortType: notNull}
-    , {name: 'sho_ingredient_id'          , sortType: notNull}
-    , {name: 'sho_name'                   , sortType: notNull}
-    , {name: 'sho_density'                , sortType: notNull}
-    , {name: 'sho_default_unit_id'        , sortType: notNull}
-    , {name: 'sho_default_unit'           , sortType: notNull}
-    , {name: 'sho_default_unit_conversion', sortType: notNull}
-    , {name: 'sho_default_unit_type'      , sortType: notNull}
-    , {name: 'sho_shop_unit_id'           , sortType: notNull}
-    , {name: 'sho_shop_unit'              , sortType: notNull}
-    , {name: 'sho_shop_unit_conversion'   , sortType: notNull}
-    , {name: 'sho_shop_unit_type'         , sortType: notNull}
-    , {name: 'sho_unit_id'                , sortType: notNull}
-    , {name: 'sho_unit'                   , sortType: notNull}
-    , {name: 'sho_unit_conversion'        , sortType: notNull}
-    , {name: 'sho_unit_type'              , sortType: notNull}
-    , {name: 'sho_amount'                 , sortType: notNull}
+    [ {name: 'shoId'                   , sortType: notNull}
+    , {name: 'shoIngredientId'         , sortType: notNull}
+    , {name: 'shoName'                 , sortType: notNull}
+    , {name: 'shoDensity'              , sortType: notNull}
+    , {name: 'shoDefaultUnitId'        , sortType: notNull}
+    , {name: 'shoDefaultUnit'          , sortType: notNull}
+    , {name: 'shoDefaultUnitConversion', sortType: notNull}
+    , {name: 'shoDefaultUnitType'      , sortType: notNull}
+    , {name: 'shoShopUnitId'           , sortType: notNull}
+    , {name: 'shoShopUnit'             , sortType: notNull}
+    , {name: 'shoShopUnitConversion'   , sortType: notNull}
+    , {name: 'shoShopUnitType'         , sortType: notNull}
+    , {name: 'shoUnitId'               , sortType: notNull}
+    , {name: 'shoUnit'                 , sortType: notNull}
+    , {name: 'shoUnitConversion'       , sortType: notNull}
+    , {name: 'shoUnitType'             , sortType: notNull}
+    , {name: 'shoAmount'               , sortType: notNull}
     ]
   )
 
   var ingredientReader = new Ext.data.JsonReader
     ( { root: 'rows'
       , totalProperty: 'totalcount'
-      , id: 'ing_id'
+      , id: 'ingId'
       }
     , ingredientRecord
     )
@@ -65,7 +65,7 @@ Ext.onReady(function () {
   var recipeReader = new Ext.data.JsonReader
     ( { root: 'rows'
       , totalProperty: 'totalcount'
-      , id: 'rec_id'
+      , id: 'recId'
       }
     , recipeRecord
     )
@@ -73,23 +73,23 @@ Ext.onReady(function () {
   var shoppingReader = new Ext.data.JsonReader
     ( { root: 'rows'
       , totalProperty: 'totalcount'
-      , id: 'sho_id'
+      , id: 'shoId'
       }
     , shoppingRecord
     )
 
   var ingredientStore = new Ext.data.Store(
     { proxy: new Ext.data.HttpProxy(
-        { api: { read: '/recipe/admin/lists/ingredient-list'
+        { api: { read: '/nrecipe/lists/ingredients/list'
                }
         , method : 'post'
         }
       )
     , reader: ingredientReader
     , remoteSort: false
-    , listeners: { exception: failure_store
+    , listeners: { exception: failureStore
                  }
-    , sortInfo: { field: 'ing_id'
+    , sortInfo: { field: 'ingId'
                 , direction: 'ASC'
                 }
     }
@@ -97,16 +97,16 @@ Ext.onReady(function () {
 
   var recipeStore = new Ext.data.Store(
     { proxy: new Ext.data.HttpProxy(
-        { api: { read: '/recipe/admin/lists/recipe-list'
+        { api: { read: '/nrecipe/lists/recipes/list'
                }
         , method : 'post'
         }
       )
     , reader: recipeReader
     , remoteSort: false
-    , listeners: { exception: failure_store
+    , listeners: { exception: failureStore
                  }
-    , sortInfo: { field: 'rec_id'
+    , sortInfo: { field: 'recId'
                 , direction: 'ASC'
                 }
     }
@@ -114,16 +114,16 @@ Ext.onReady(function () {
 
   var shoppingStore = new Ext.data.Store(
     { proxy: new Ext.data.HttpProxy(
-        { api: { read: '/recipe/admin/lists/shopping-list'
+        { api: { read: '/nrecipe/lists/shopping/list'
                }
         , method : 'post'
         }
       )
     , reader: shoppingReader
     , remoteSort: false
-    , listeners: { exception: failure_store
+    , listeners: { exception: failureStore
                  }
-    , sortInfo: { field: 'sho_id'
+    , sortInfo: { field: 'shoId'
                 , direction: 'ASC'
                 }
     }
@@ -202,14 +202,14 @@ Ext.onReady(function () {
   ingredientDeleteButton.on('click', function () {
     if (ingredientStore.selectedRecord) {
       Ext.Ajax.request(
-        { url: '/recipe/admin/lists/ingredient-delete'
+        { url: '/nrecipe/lists/ingredients/delete'
         , success: function (response,options) {
-            if (success_ajax(response,options)) {
+            if (successAjax(response,options)) {
               ingredientLoadStore()
             }
           }
-        , failure: failure_ajax
-        , params: { ing_id: ingredientStore.selectedRecord.data.ing_id
+        , failure: failureAjax
+        , params: { ingId: ingredientStore.selectedRecord.data.ingId
                   }
         }
       )
@@ -226,14 +226,14 @@ Ext.onReady(function () {
   recipeDeleteButton.on('click', function () {
     if (recipeStore.selectedRecord) {
       Ext.Ajax.request(
-        { url: '/recipe/admin/lists/recipe-delete'
+        { url: '/nrecipe/lists/recipes/delete'
         , success: function (response,options) {
-            if (success_ajax(response,options)) {
+            if (successAjax(response,options)) {
               recipeLoadStore()
             }
           }
-        , failure: failure_ajax
-        , params: { rec_id: recipeStore.selectedRecord.data.rec_id
+        , failure: failureAjax
+        , params: { recId: recipeStore.selectedRecord.data.recId
                   }
         }
       )
@@ -269,7 +269,7 @@ Ext.onReady(function () {
     { autoHeight: true
     , autoWidth: true
     , items:
-        [ '<a href="/recipe/admin/lists/view">Back to list page</a>'
+        [ '<a href="/nrecipe/lists/view">Back to list page</a>'
         , '-'
         , ingredientAddButton
         , '-'
@@ -280,7 +280,7 @@ Ext.onReady(function () {
         , '->'
         , '-'
         , { xtype: 'tbtext'
-          , text: 'Ingredients for ' + list_name
+          , text: 'Ingredients for ' + listName
           }
         , '-'
         ]
@@ -291,7 +291,7 @@ Ext.onReady(function () {
     { autoHeight: true
     , autoWidth: true
     , items:
-        [ '<a href="/recipe/admin/lists/view">Back to list page</a>'
+        [ '<a href="/nrecipe/lists/view">Back to list page</a>'
         , '-'
         , recipeAddButton
         , '-'
@@ -302,7 +302,7 @@ Ext.onReady(function () {
         , '->'
         , '-'
         , { xtype: 'tbtext'
-          , text: 'Recipes for ' + list_name
+          , text: 'Recipes for ' + listName
           }
         , '-'
         ]
@@ -312,7 +312,7 @@ Ext.onReady(function () {
   function ingredientLoadStore () {
     ingredientStore.storeLoaded = false
     ingredientStore.load(
-      { params: { list_id: list_id
+      { params: { listId: listId
                 }
       , callback: function () {
           ingredientStore.storeLoaded = true
@@ -325,7 +325,7 @@ Ext.onReady(function () {
   function recipeLoadStore () {
     recipeStore.storeLoaded = false
     recipeStore.load(
-      { params: { list_id: list_id
+      { params: { listId: listId
                 }
       , callback: function () {
           recipeStore.storeLoaded = true
@@ -338,7 +338,7 @@ Ext.onReady(function () {
   function shoppingLoadStore () {
     shoppingStore.storeLoaded = false
     shoppingStore.load(
-      { params: { list_id: list_id
+      { params: { listId: listId
                 }
       , callback: function() {
           shoppingStore.storeLoaded = true
@@ -351,22 +351,22 @@ Ext.onReady(function () {
     { columns:
         [ { header   : 'Id'
           , width  : 36
-          , dataIndex: 'ing_id'
+          , dataIndex: 'ingId'
           , sortable : true
           }
         , { header   : 'Name'
           , width  : 72
-          , dataIndex: 'ing_name'
+          , dataIndex: 'ingName'
           , sortable : true
           }
         , { header   : 'Amount'
           , width  : 160
-          , dataIndex: 'ing_amount'
+          , dataIndex: 'ingAmount'
           , sortable : true
           }
         , { header   : 'Unit'
           , width  : 72
-          , dataIndex: 'ing_unit'
+          , dataIndex: 'ingUnit'
           , sortable : true
           }
         ]
@@ -379,17 +379,17 @@ Ext.onReady(function () {
     { columns:
         [ { header   : 'Id'
           , width  : 36
-          , dataIndex: 'rec_id'
+          , dataIndex: 'recId'
           , sortable : true
           }
         , { header   : 'Name'
           , width  : 72
-          , dataIndex: 'rec_name'
+          , dataIndex: 'recName'
           , sortable : true
           }
         , { header   : 'Amount'
           , width  : 160
-          , dataIndex: 'rec_amount'
+          , dataIndex: 'recAmount'
           , sortable : true
           }
         ]
@@ -403,17 +403,17 @@ Ext.onReady(function () {
     { columns:
         [ { header   : 'Name'
           , width  : 72
-          , dataIndex: 'sho_name'
+          , dataIndex: 'shoName'
           , sortable : true
           }
         , { header   : 'Amount'
           , width  : 160
-          , dataIndex: 'sho_amount'
+          , dataIndex: 'shoAmount'
           , sortable : true
           }
         , { header   : 'Unit'
           , width  : 72
-          , dataIndex: 'sho_shop_unit'
+          , dataIndex: 'shoShopUnit'
           , sortable : true
           }
         ]
@@ -511,7 +511,7 @@ Ext.onReady(function () {
   ingredientLoadStore()
 
   var recipeGrid = new Ext.grid.GridPanel(
-    { title: 'Recipes on "' + list_name + '" list'
+    { title: 'Recipes on "' + listName + '" list'
     , store: recipeStore
     , sm: recipeGridSelectionModel
     , cm: recipeModel
@@ -577,7 +577,7 @@ Ext.onReady(function () {
   var subPanel = new Ext.Panel(
     { layout: 'accordion'
     , region: 'center'
-    , title: list_name
+    , title: listName
     , items: [ recipeGrid
              , ingredientGrid
              , shoppingGrid
@@ -596,3 +596,219 @@ Ext.onReady(function () {
 
   viewport.render()
 } )
+
+function recipeListWindowFactory (config) { with (config) {
+  Ext.QuickTips.init()
+
+  var comboRecord = new Ext.data.Record.create(
+    [ { name: 'description', mapping: 0 }
+    ]
+  )
+
+  var recipeReader = new Ext.data.JsonReader(
+    { totalProperty: 'totalcount'
+    , root: 'rows'
+    }
+  , comboRecord
+  )
+
+  var recipeStore = new Ext.data.Store(
+    { proxy: new Ext.data.HttpProxy(
+        { url: '/nrecipe/recipes/search'
+        , method : 'post'
+        }
+      )
+    , baseParams: { searchAnywhere: true
+                  }
+    , listeners: { exception: failureStore
+                 }
+    , reader: recipeReader
+    }
+  )
+
+  var recipeCombo = new AddComboBox(
+    { store: recipeStore
+    , displayField: 'description'
+    , valueField: 'description'
+    , hiddenName: 'recName'
+    , triggerAction: 'query'
+    , minChars: 0
+    , anchor:'100%'
+    , mode:'remote'
+    , id: 'recRecipeId'
+    , fieldLabel: 'Recipe'
+    }
+  )
+
+  var fieldSet = new Ext.form.FieldSet(
+    { border: false
+    , style: { marginTop: '10px'
+             , marginBottom: '0px'
+             , paddingBottom: '0px'
+             }
+    , layout: { type: 'form'
+              , labelSeparator: ''
+              }
+    , defaults: { xtype: 'textfield'
+                }
+    , items:
+        [ { id: 'recId'
+          , xtype: 'hidden'
+          }
+        , recipeCombo
+        , { id: 'recAmount'
+          , fieldLabel: 'Amount'
+          , xtype: 'numberfield'
+          , allowDecimals: true
+          , allowNegative: false
+          , anchor: '100%'
+          }
+        ]
+    }
+  )
+
+  config = config || {}
+  config.width = 550
+  config.height = 200
+  config.fieldSet = fieldSet
+  config.route = 'lists/recipes/'
+
+  var editWindow = genericWindowFactory(config)
+
+  return editWindow
+} }
+
+function ingredientListWindowFactory (config) { with (config) {
+  Ext.QuickTips.init()
+
+  var comboRecord = new Ext.data.Record.create(
+    [ { name: 'description', mapping: 0 }
+    ]
+  )
+
+  var unitReader = new Ext.data.JsonReader
+    ( { totalProperty: 'totalcount'
+      , root: 'rows'
+      }
+    , comboRecord
+    )
+
+  var unitStore = new Ext.data.Store(
+    { proxy: new Ext.data.HttpProxy(
+        { url: '/nrecipe/units/search'
+        , method : 'post'
+        }
+      )
+    , baseParams: { searchAnywhere: true
+                  }
+    , listeners: { exception: failureStore
+                 }
+    , reader: unitReader
+    }
+  )
+
+  var unitCombo = new AddComboBox(
+    { store: unitStore
+    , displayField: 'description'
+    , valueField: 'description'
+    , hiddenName: 'ingUnit'
+    , triggerAction: 'query'
+    , minChars: 0
+    , anchor:'100%'
+    , mode:'remote'
+    , id: 'ingUnitId'
+    , fieldLabel: 'Units'
+    }
+  )
+
+  var ingredientReader = new Ext.data.JsonReader
+    ( { totalProperty: 'totalcount'
+      , root: 'rows'
+      }
+    , comboRecord
+    )
+
+  var ingredientStore = new Ext.data.Store(
+    { proxy: new Ext.data.HttpProxy(
+        { url: '/nrecipe/ingredients/search'
+        , method : 'post'
+        }
+      )
+    , baseParams: { searchAnywhere: true
+                  }
+    , listeners: { exception: failureStore
+                 }
+    , reader: ingredientReader
+    }
+  )
+
+  var ingredientCombo = new AddComboBox(
+    { store: ingredientStore
+    , displayField: 'description'
+    , valueField: 'description'
+    , hiddenName: 'ingName'
+    , triggerAction: 'query'
+    , minChars: 0
+    , anchor:'100%'
+    , mode:'remote'
+    , id: 'ingIngredientId'
+    , fieldLabel: 'Ingredient'
+    }
+  )
+
+  var fieldSet = new Ext.form.FieldSet(
+    { border: false
+    , style: { marginTop: '10px'
+             , marginBottom: '0px'
+             , paddingBottom: '0px'
+             }
+    , layout: { type: 'form'
+              , labelSeparator: ''
+              }
+    , defaults: { xtype: 'textfield'
+                }
+    , items:
+        [ { id: 'ingId'
+          , xtype: 'hidden'
+          }
+        , ingredientCombo
+        , { id: 'ingAmount'
+          , fieldLabel: 'Amount'
+          , xtype: 'numberfield'
+          , allowDecimals: true
+          , allowNegative: false
+          , anchor: '100%'
+          }
+        , unitCombo
+        ]
+    }
+  )
+
+
+  var editWindow = new Ext.Window(
+    { width: 550
+    , height: 200
+    , title: 'Edit'
+    , y: 25
+    , manager: userWindowGroup
+    , modal: true
+    , layout: 'fit'
+    , closeAction: 'hide'
+    , items: editPanel
+    , openAdd: function () {
+        editWindow.fireEvent('goLoading','goAdding')
+      }
+    , openEdit: function () {
+        editWindow.fireEvent('goLoading','goEditing')
+      }
+    }
+  )
+
+  config = config || {}
+  config.width = 550
+  config.height = 200
+  config.fieldSet = fieldSet
+  config.route = 'lists/ingredients/'
+
+  return editWindow
+} }

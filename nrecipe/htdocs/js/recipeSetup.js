@@ -18,7 +18,7 @@ Ext.onReady(function () {
   )
 
   var store = new Ext.data.JsonStore(
-    { url: '/nrecipe/recipes/setup/list'
+    { url: '/nrecipe/recipes/ingredients/list'
     , fields: Record
     , remoteSort: true
     , root: 'rows'
@@ -73,7 +73,7 @@ Ext.onReady(function () {
   deleteButton.on('click', function () {
     if (store.selectedRecord) {
       Ext.Ajax.request(
-        { url: '/nrecipe/recipes/setup/remove'
+        { url: '/nrecipe/recipes/ingredients/remove'
         , success: function (response,options) {
             if (successAjax(response,options)) {
               loadStore()
@@ -328,7 +328,7 @@ function setupWindowFactory (config) { with (config) {
   config.width = 550
   config.height = 200
   config.fieldSet = fieldSet
-  config.route = 'recipes/setup'
+  config.route = 'recipes/ingredients'
 
   editWindow = genericWindowFactory(config)
 

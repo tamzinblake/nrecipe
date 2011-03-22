@@ -90,7 +90,7 @@ Ext.onReady(function () {
 
   var openRecipe = function () {
     if (store.selectedRecord) {
-      window.location.href='/nrecipe/setup/view/'+store.selectedRecord.data._id
+      window.location.href='/nrecipe/recipe/ingredients/view/'+store.selectedRecord.data._id
     }
   }
 
