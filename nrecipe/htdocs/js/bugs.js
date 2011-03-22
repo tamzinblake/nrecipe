@@ -288,8 +288,8 @@ function bugWindowFactory(config){ with(config){
   )
 
   config = config || {}
-  config.width = 500;
-  config.height = 200;
+  config.width = 500
+  config.height = 200
   config.fieldSet = fieldSet
   config.route = 'bugs'
 

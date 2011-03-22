@@ -222,3 +222,48 @@ Ext.onReady(function () {
 
   viewport.render()
 } )
+
+function unitWindowFactory(config){ with(config){
+  Ext.QuickTips.init()
+
+  var fieldSet = new Ext.form.FieldSet(
+    { border: false
+    , style: { marginTop: '10px'
+             , marginBottom: '0px'
+             , paddingBottom: '0px'
+             }
+    , layout: { type: 'form'
+              , labelSeparator: ''
+              }
+    , defaults: { xtype: 'textfield'
+                }
+    , items:
+       [ { id: '_id'
+         , xtype: 'hidden'
+         }
+       , { id: 'name'
+         , anchor: '100%'
+         , fieldLabel: 'Name'
+         }
+       , { id: 'type'
+         , anchor: '100%'
+         , fieldLabel: 'Type'
+         }
+       , { id: 'conversion'
+         , anchor: '100%'
+         , fieldLabel: 'Conversion'
+         }
+       ]
+    }
+  )
+
+  config = config || {}
+  config.width = 550
+  config.height = 200
+  config.fieldSet = fieldSet
+  config.route = 'units'
+
+  var editWindow = genericWindowFactory(config)
+
+  return editWindow
+} }

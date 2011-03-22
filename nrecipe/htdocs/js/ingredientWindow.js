@@ -21,7 +21,7 @@ function ingredientWindowFactory (config) { with (config) {
       )
     , baseParams: { searchAnywhere: true
     }
-    , listeners: { exception: failure_store
+    , listeners: { exception: failureStore
                  }
     , reader: unitReader
     }
@@ -36,7 +36,7 @@ function ingredientWindowFactory (config) { with (config) {
     , minChars: 0
     , anchor:'100%'
     , mode:'remote'
-    , id: 'unit_id'
+    , id: 'unitId'
     , fieldLabel: 'Default units'
     }
   )
@@ -56,7 +56,7 @@ function ingredientWindowFactory (config) { with (config) {
       )
       , baseParams: { searchAnywhere: true
                     }
-      , listeners: { exception: failure_store
+      , listeners: { exception: failureStore
                    }
       , reader: shopUnitReader
     }
@@ -66,17 +66,17 @@ function ingredientWindowFactory (config) { with (config) {
     { store: shopUnitStore
     , displayField: 'description'
     , valueField: 'description'
-    , hiddenName: 'shop_unit'
+    , hiddenName: 'shopUnit'
     , triggerAction: 'query'
     , minChars: 0
     , anchor:'100%'
     , mode:'remote'
-    , id: 'shop_unit_id'
+    , id: 'shopUnitId'
     , fieldLabel: 'Shop units'
     }
   )
 
-  var field_set = new Ext.form.FieldSet(
+  var fieldSet = new Ext.form.FieldSet(
     { border: false
     , style: { marginTop: '10px'
              , marginBottom: '0px'
@@ -88,7 +88,7 @@ function ingredientWindowFactory (config) { with (config) {
     , defaults: { xtype: 'textfield'
                 }
     , items:
-        [ { id: 'id'
+        [ { id: '_id'
           , xtype: 'hidden'
           }
         , { id: 'name'
@@ -108,109 +108,13 @@ function ingredientWindowFactory (config) { with (config) {
     }
   )
 
-  closeButton = new Ext.Button(
-    { text: 'Cancel'
-    , handler: function () {
-        editWindow.fireEvent('go_finished')
-      }
-    }
-  )
+  config = config || {}
+  config.width = 550
+  config.height = 200
+  config.fieldSet = fieldSet
+  config.route = 'ingredients'
 
-  var editPanel = new Ext.form.FormPanel(
-    { buttonAlign: 'center'
-    , items: [ field_set
-             ]
-    , buttons:
-        [ closeButton
-        , { text: 'Submit'
-          , handler: function () {
-              editPanel.getForm().submit(
-                { url: '/recipe/admin/ingredients/replace'
-                , params: {}
-                , failure: failure_form
-                , success: function (form,action) {
-                    if (editWindow.state =='editing') {
-                      editWindow.fireEvent('go_finished')
-                    }
-                    else if (editWindow.state =='adding') {
-                      editWindow.fireEvent('go_adding')
-                    }
-                  }
-                }
-              )
-            }
-          }
-        ]
-    }
-  )
-
-  editWindow = new Ext.Window(
-    { width: 550
-    , height: 200
-    , title: 'Edit'
-    , y: 25
-    , manager: userWindowGroup
-    , modal: true
-    , layout: 'fit'
-    , closeAction: 'hide'
-    , items: editPanel
-    , openAdd: function () {
-        editWindow.fireEvent('go_loading','go_adding')
-      }
-    , openEdit: function () {
-        editWindow.fireEvent('go_loading','go_editing')
-      }
-    }
-  )
-
-  editWindow.addEvents(
-    { 'go_adding'  : true
-    , 'go_editing' : true
-    , 'go_loading' : true
-    , 'go_finished': true
-    }
-  )
-
-  editWindow.loaded = 0
-  editWindow.addListener('go_loading', function (next) {
-    if (editWindow.state == 'loading' && editWindow.loaded < 2){
-      editWindow.loaded++
-    }
-    else if (editWindow.state != 'loading') {
-      editWindow.state = 'loading'
-      editWindow.loaded = 0
-      editWindow.fireEvent('go_loading',next)
-      editWindow.fireEvent('go_loading',next)
-      editWindow.fireEvent('go_loading',next)
-    }
-    else {
-      editWindow.fireEvent(next)
-    }
-  } )
-
-  editWindow.addListener('go_adding', function () {
-    editWindow.show()
-    editPanel.getForm().reset()
-    loadStore()
-    editWindow.state = 'adding'
-    closeButton.setText('Close')
-    editWindow.setTitle('Add')
-    editPanel.items.id=null
-  } )
-
-  editWindow.addListener('go_editing', function () {
-    editWindow.show()
-    editWindow.state = 'editing'
-    closeButton.setText('Cancel')
-    editWindow.setTitle('Edit')
-    editPanel.getForm().loadRecord(getSelected())
-  } )
-
-  editWindow.addListener('go_finished', function () {
-    editWindow.state = 'finished'
-    editWindow.hide()
-    loadStore()
-  } )
+  editWindow = genericWindowFactory(config)
 
   return editWindow
 } }
