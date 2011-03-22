@@ -6,6 +6,7 @@ var template = require('./template')
              , list : list
              , replace : replace
              , remove : remove
+             , search : search
              }
 
 function reroute (req, res, path, db) {
@@ -59,6 +60,15 @@ function remove (req,res,path,db) {
                   res.send({success: err == null})
                 }
               )
+}
+
+function search (req,res,path,db) {
+  db.collection('units')
+    .find({$where: 'this.name =~ ' . req.body.query }, {_id: 1, name: 1})
+    .limit(100)
+    .toArray( function (err, array) {
+       res.send({rows: array})
+    } )
 }
 
 this.reroute = reroute
