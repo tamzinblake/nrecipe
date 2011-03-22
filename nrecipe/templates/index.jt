@@ -2,5 +2,22 @@ $(IMPORT (header))
 $(IMPORT (footer))
 $(WRAP header()
 $)
-This is the index page.
+<center>
+
+<p class="s">
+<a href="/nrecipe/bugs/view">Bug tracker</a>
+
+<p class="s">
+<a href="/nrecipe/units/view">Unit browser</a>
+
+<p class="s">
+<a href="/nrecipe/ingredients/view">Ingredient browser</a>
+
+<p class="s">
+<a href="/nrecipe/recipes/view">Recipe browser</a>
+
+<p class="s">
+<a href="/nrecipe/lists/view">Shopping list browser</a>
+
+</center>
 ${ footer() }

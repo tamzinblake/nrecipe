@@ -6,37 +6,29 @@ Ext.onReady(function () {
   var body = Ext.getBody()
 
   var Record = Ext.data.Record.create
-    ( [ {name: 'id'        , mapping: 0, sortType: notNull}
-      , {name: 'name'      , mapping: 1, sortType: notNull}
-      , {name: 'type'      , mapping: 2, sortType: notNull}
-      , {name: 'conversion', mapping: 3, sortType: notNull}
+    ( [ {name: '_id'       , sortType: notNull}
+      , {name: 'name'      , sortType: notNull}
+      , {name: 'type'      , sortType: notNull}
+      , {name: 'conversion', sortType: notNull}
       ]
     )
 
-  var reader = new Ext.data.JsonReader
-    ( { root: 'rows'
-      , totalProperty: 'totalcount'
-      , id: 'id'
-      }
-    , Record
-    )
-
-  var store = new Ext.data.Store
-    ( { proxy: new Ext.data.HttpProxy
-          ( { api : { read: '/recipe/admin/units/list'
-                    }
-            , method : 'post'
-            }
-          )
-      , reader: reader
+  var store = new Ext.data.JsonStore
+    ( { url: '/nrecipe/units/list'
+      , fields: Record
       , remoteSort: true
-      , listeners: { exception: failure_store
+      , root: 'rows'
+      , totalProperty: 'totalcount'
+      , idProperty: '_id'
+      , listeners: { exception: failureStore
                    }
-      , sortInfo : { field: 'id'
+      , sortInfo : { field: '_id'
                    , direction: 'ASC'
                    }
       }
     )
+
+  store.storeLoaded = false
 
   var editWindow = unitWindowFactory
     ( { getSelected: function () {
@@ -46,14 +38,12 @@ Ext.onReady(function () {
       }
     )
 
-  var addButton = new Ext.Button
-    ( { text: 'New unit'
-      , listeners:
-        { click: function () {
-          editWindow.openAdd()
-        }}
-      }
-    )
+  var addButton = new Ext.Button(
+    { text: 'New unit'
+    , listeners: { click: editWindow.openAdd
+                 }
+    }
+  )
 
   function doEdit () {
     if (store.selectedRecord) {
@@ -78,15 +68,15 @@ Ext.onReady(function () {
   deleteButton.on('click', function () {
     if (store.selectedRecord) {
       Ext.Ajax.request(
-        { url: '/recipe/admin/units/delete'
+        { url: '/nrecipe/units/remove'
         , success: function (response,options) {
-            if (success_ajax(response,options)) {
+            if (successAjax(response,options)) {
               loadStore()
             }
           }
-        , failure: failure_ajax
+        , failure: failureAjax
         , params:
-          { id: store.selectedRecord.data.id
+          { _id: store.selectedRecord.data._id
           }
         }
       )
@@ -108,7 +98,7 @@ Ext.onReady(function () {
       , emptyMsg: 'no data to display'
       , displayInfo: true
       , prependButtons: true
-      , stateId: 'paging_toolbarunits'
+      , stateId: 'pagingToolbarunits'
       , stateful: true
       , stateEvents: ['change','select']
       , listeners:
@@ -120,7 +110,7 @@ Ext.onReady(function () {
             this.cursor = 0
           }
         }
-      , items: [ '<a href="/recipe/index.html">Back to menu</a>'
+      , items: [ '<a href="/nrecipe">Back to menu</a>'
                , '-'
                , addButton
                , '-'
