@@ -12,30 +12,22 @@ Ext.onReady(function () {
     ]
   )
 
-  var reader = new Ext.data.JsonReader
-    ( { root: 'rows'
-      , totalProperty: 'totalcount'
-      , id: '_id'
-      }
-    , Record
-  )
-
-  var store = new Ext.data.Store(
-    { proxy: new Ext.data.HttpProxy(
-        { api: { read: '/nrecipe/lists/list'
-               }
-        , method : 'post'
-        }
-      )
-    , reader: reader
+  var store = new Ext.data.JsonStore(
+    { url: '/nrecipe/lists/list'
+    , fields: Record
     , remoteSort: true
+    , root: 'rows'
+    , totalProperty: 'totalcount'
+    , idProperty: '_id'
     , listeners: { exception: failureStore
                  }
-    , sortInfo: { field: 'item'
+    , sortInfo: { field: '_id'
                 , direction: 'ASC'
                 }
     }
   )
+
+  store.storeLoaded = false
 
   var editWindow = listWindowFactory(
     { getSelected: function () {
