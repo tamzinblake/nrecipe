@@ -6,31 +6,21 @@ Ext.onReady(function () {
   var body = Ext.getBody()
 
   var Record = Ext.data.Record.create(
-    [ {name: 'id'  , mapping: 0}
+    [ {name: '_id'  , mapping: 0}
     , {name: 'name', mapping: 1}
     ]
   )
 
-  var reader = new Ext.data.JsonReader
-    ( { root: 'rows'
-      , totalProperty: 'totalcount'
-      , id: 'id'
-      }
-    , Record
-    )
-
-  var store = new Ext.data.Store(
-    { proxy: new Ext.data.HttpProxy(
-        { api: { read: '/nrecipe/recipes/list'
-               }
-        , method : 'post'
-        }
-      )
-    , reader: reader
+  var store = new Ext.data.JsonStore(
+    { url: '/nrecipe/recipes/list'
+    , fields: Record
     , remoteSort: true
-    , listeners: { exception: failure_store
+    , root: 'rows'
+    , totalProperty: 'totalcount'
+    , idProperty: '_id'
+    , listeners: { exception: failureStore
                  }
-    , sortInfo: { field: 'id'
+    , sortInfo: { field: '_id'
                 , direction: 'ASC'
                 }
     }
@@ -79,12 +69,12 @@ Ext.onReady(function () {
       Ext.Ajax.request(
         { url: '/nrecipe/recipes/delete'
         , success: function (response,options) {
-            if (success_ajax(response,options)) {
+            if (successAjax(response,options)) {
               loadStore()
             }
           }
-        , failure: failure_ajax
-        , params: { id: store.selectedRecord.data.id
+        , failure: failureAjax
+        , params: { _id: store.selectedRecord.data._id
                   }
         }
       )
@@ -100,7 +90,7 @@ Ext.onReady(function () {
 
   var openRecipe = function () {
     if (store.selectedRecord) {
-      window.location.href='/nrecipe/setup/view/'+store.selectedRecord.data.id
+      window.location.href='/nrecipe/setup/view/'+store.selectedRecord.data._id
     }
   }
 
@@ -120,7 +110,7 @@ Ext.onReady(function () {
     , emptyMsg: 'no data to display'
     , displayInfo: true
     , prependButtons: true
-    , stateId: 'paging_toolbarrecipes'
+    , stateId: 'pagingToolbarrecipes'
     , stateful: true
     , stateEvents: ['change','select']
     , listeners:
@@ -166,7 +156,7 @@ Ext.onReady(function () {
     { columns:
         [ { header   : 'Id'
           , width  : 36
-          , dataIndex: 'id'
+          , dataIndex: '_id'
           , sortable : true
           }
         , { header   : 'Name'
@@ -245,3 +235,80 @@ Ext.onReady(function () {
 
   viewport.render()
 } )
+
+function recipeWindowFactory (config) { with (config) {
+  Ext.QuickTips.init()
+
+  var comboRecord = new Ext.data.Record.create(
+    [ {name: 'description', mapping: 0}
+    ]
+  )
+
+  var unitReader = new Ext.data.JsonReader(
+    { totalProperty: 'totalcount'
+    , root: 'rows'
+    }
+  , comboRecord
+  )
+
+  var unitStore = new Ext.data.Store(
+    { proxy: new Ext.data.HttpProxy(
+        { url: '/nrecipe/units/search'
+        , method : 'post'
+        }
+      )
+    , baseParams: { searchAnywhere: true
+                  }
+    , listeners: { exception: failureStore
+                 }
+    , reader: unitReader
+    }
+  )
+
+  var unitCombo = new AddComboBox(
+    { store: unitStore
+    , displayField: 'description'
+    , valueField: 'description'
+    , hiddenName: 'unit'
+    , triggerAction: 'query'
+    , minChars: 0
+    , anchor:'100%'
+    , mode:'remote'
+    , id: 'unitId'
+    , fieldLabel: 'Default units'
+    }
+  )
+
+  var fieldSet = new Ext.form.FieldSet(
+    { border: false
+    , style: { marginTop: '10px'
+             , marginBottom: '0px'
+             , paddingBottom: '0px'
+             }
+    , layout: { type: 'form'
+              , labelSeparator: ''
+              }
+    , defaults: { xtype: 'textfield'
+                }
+    , items:
+        [ { id: '_id'
+          , xtype: 'hidden'
+          }
+        , { id: 'name'
+          , anchor: '100%'
+          , fieldLabel: 'Name'
+          }
+        ]
+    }
+  )
+
+  config = config || {}
+  config.width = 550
+  config.height = 200
+  config.fieldSet = fieldSet
+  config.route = 'recipes'
+
+  editWindow = genericWindowFactory(config)
+
+  return editWindow
+} }

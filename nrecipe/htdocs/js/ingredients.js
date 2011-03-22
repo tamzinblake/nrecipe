@@ -9,10 +9,10 @@ Ext.onReady(function () {
     [ {name: '_id'          , mapping: 0, sortType: notNull}
     , {name: 'name'        , mapping: 1, sortType: notNull}
     , {name: 'density'     , mapping: 2, sortType: notNull}
-    , {name: 'unit_id'     , mapping: 3, sortType: notNull}
+    , {name: 'unitId'     , mapping: 3, sortType: notNull}
     , {name: 'unit'        , mapping: 4, sortType: notNull}
-    , {name: 'shop_unit_id', mapping: 5, sortType: notNull}
-    , {name: 'shop_unit'   , mapping: 6, sortType: notNull}
+    , {name: 'shopUnitId', mapping: 5, sortType: notNull}
+    , {name: 'shopUnit'   , mapping: 6, sortType: notNull}
     ]
   )
 
@@ -74,11 +74,11 @@ Ext.onReady(function () {
       Ext.Ajax.request(
         { url: '/nrecipe/ingredients/remove'
         , success: function (response,options) {
-            if (success_ajax(response,options)) {
+            if (successAjax(response,options)) {
               loadStore()
             }
           }
-        , failure: failure_ajax
+        , failure: failureAjax
         , params: { _id: store.selectedRecord.data._id
                   }
         }
@@ -101,7 +101,7 @@ Ext.onReady(function () {
     , emptyMsg: 'no data to display'
     , displayInfo: true
     , prependButtons: true
-    , stateId: 'paging_toolbaringredients'
+    , stateId: 'pagingToolbaringredients'
     , stateful: true
     , stateEvents: ['change','select']
     , listeners:
@@ -159,7 +159,7 @@ Ext.onReady(function () {
           }
         , { header   : 'Shopping List unit'
           , width  : 160
-          , dataIndex: 'shop_unit'
+          , dataIndex: 'shopUnit'
           , sortable : true
           }
         ]
