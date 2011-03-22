@@ -6,37 +6,27 @@ Ext.onReady(function () {
   var body = Ext.getBody()
 
   var Record = Ext.data.Record.create(
-    [ {name: 'id'             , mapping: 0, sortType: notNull}
-    , {name: 'name'           , mapping: 1, sortType: notNull}
-    , {name: 'density'        , mapping: 2, sortType: notNull}
-    , {name: 'default_unit_id', mapping: 3, sortType: notNull}
-    , {name: 'default_unit'   , mapping: 4, sortType: notNull}
-    , {name: 'unit_id'        , mapping: 5, sortType: notNull}
-    , {name: 'unit'           , mapping: 6, sortType: notNull}
-    , {name: 'amount'         , mapping: 7, sortType: notNull}
+    [ {name: '_id'           , mapping: 0, sortType: notNull}
+    , {name: 'name'          , mapping: 1, sortType: notNull}
+    , {name: 'density'       , mapping: 2, sortType: notNull}
+    , {name: 'defaultUnitId' , mapping: 3, sortType: notNull}
+    , {name: 'defaultUnit'   , mapping: 4, sortType: notNull}
+    , {name: 'unitId'        , mapping: 5, sortType: notNull}
+    , {name: 'unit'          , mapping: 6, sortType: notNull}
+    , {name: 'amount'        , mapping: 7, sortType: notNull}
     ]
   )
 
-  var reader = new Ext.data.JsonReader
-    ( { root: 'rows'
-      , totalProperty: 'totalcount'
-      , id: 'id'
-      }
-    , Record
-  )
-
-  var store = new Ext.data.Store(
-    { proxy: new Ext.data.HttpProxy(
-        { api: { read: '/recipe/admin/setup/list'
-               }
-        , method : 'post'
-        }
-      )
-    , reader: reader
-    , remoteSort: false
-    , listeners: { exception: failure_store
+  var store = new Ext.data.JsonStore(
+    { url: '/nrecipe/recipes/setup/list'
+    , fields: Record
+    , remoteSort: true
+    , root: 'rows'
+    , totalProperty: 'totalcount'
+    , idProperty: '_id'
+    , listeners: { exception: failureStore
                  }
-    , sortInfo: { field: 'id'
+    , sortInfo: { field: '_id'
                 , direction: 'ASC'
                 }
     }
@@ -83,14 +73,14 @@ Ext.onReady(function () {
   deleteButton.on('click', function () {
     if (store.selectedRecord) {
       Ext.Ajax.request(
-        { url: '/recipe/admin/setup/delete'
+        { url: '/nrecipe/recipes/setup/remove'
         , success: function (response,options) {
-            if (success_ajax(response,options)) {
+            if (successAjax(response,options)) {
               loadStore()
             }
           }
-        , failure: failure_ajax
-        , params: { id: store.selectedRecord.data.id
+        , failure: failureAjax
+        , params: { _id: store.selectedRecord.data._id
                   }
         }
       )
@@ -110,7 +100,7 @@ Ext.onReady(function () {
     { autoHeight: true
     , autoWidth: true
     , items:
-        [ '<a href="/recipe/admin/recipes/view">Back to recipe page</a>'
+        [ '<a href="/nrecipe/recipes/view">Back to recipe page</a>'
         , '-'
         , addButton
         , '-'
@@ -121,7 +111,7 @@ Ext.onReady(function () {
         , '->'
         , '-'
         , { xtype: 'tbtext'
-          , text: 'Ingredients for ' + recipe_name
+          , text: 'Ingredients for ' + recipeName
           }
         , '-'
         ]
@@ -131,7 +121,7 @@ Ext.onReady(function () {
   function loadStore () {
     store.storeLoaded = false
     store.load(
-      { params: { recipe_id: recipe_id
+      { params: { recipeId: recipeId
                 }
       , callback: function () {
           store.storeLoaded = true
@@ -227,3 +217,120 @@ Ext.onReady(function () {
 
   viewport.render()
 } )
+
+function setupWindowFactory (config) { with (config) {
+  Ext.QuickTips.init()
+
+  var comboRecord = new Ext.data.Record.create(
+    [ { name: 'description', mapping: 0 }
+    ]
+  )
+
+  var unitReader = new Ext.data.JsonReader
+    ( { totalProperty: 'totalcount'
+      , root: 'rows'
+      }
+    , comboRecord
+    )
+
+  var unitStore = new Ext.data.Store(
+    { proxy: new Ext.data.HttpProxy(
+        { url: '/nrecipe/units/search'
+        , method : 'post'
+        }
+      )
+    , baseParams: { searchAnywhere: true
+                  }
+    , listeners: { exception: failureStore
+                 }
+    , reader: unitReader
+    }
+  )
+
+  var unitCombo = new AddComboBox(
+    { store: unitStore
+    , displayField: 'description'
+    , valueField: 'description'
+    , hiddenName: 'unit'
+    , triggerAction: 'query'
+    , minChars: 0
+    , anchor:'100%'
+    , mode:'remote'
+    , id: 'unitId'
+    , fieldLabel: 'Units'
+    }
+  )
+
+  var ingredientReader = new Ext.data.JsonReader
+    ( { totalProperty: 'totalcount'
+      , root: 'rows'
+      }
+    , comboRecord
+    )
+
+  var ingredientStore = new Ext.data.Store(
+    { proxy: new Ext.data.HttpProxy(
+        { url: '/nrecipe/ingredients/search'
+        , method : 'post'
+        }
+      )
+    , baseParams: { searchAnywhere: true
+                  }
+    , listeners: { exception: failureStore
+                 }
+    , reader: ingredientReader
+    }
+  )
+
+  var ingredientCombo = new AddComboBox(
+    { store: ingredientStore
+    , displayField: 'description'
+    , valueField: 'description'
+    , hiddenName: 'name'
+    , triggerAction: 'query'
+    , minChars: 0
+    , anchor:'100%'
+    , mode:'remote'
+    , id: 'ingredientId'
+    , fieldLabel: 'Ingredient'
+    }
+  )
+
+  var fieldSet = new Ext.form.FieldSet(
+    { border: false
+    , style: { marginTop: '10px'
+             , marginBottom: '0px'
+             , paddingBottom: '0px'
+             }
+    , layout: { type: 'form'
+              , labelSeparator: ''
+              }
+    , defaults: { xtype: 'textfield'
+                }
+    , items:
+        [ { id: '_id'
+          , xtype: 'hidden'
+          }
+        , ingredientCombo
+        , { id: 'amount'
+          , fieldLabel: 'Amount'
+          , xtype: 'numberfield'
+          , allowDecimals: true
+          , allowNegative: false
+          , anchor: '100%'
+          }
+        , unitCombo
+        ]
+    }
+  )
+
+  config = config || {}
+  config.width = 550
+  config.height = 200
+  config.fieldSet = fieldSet
+  config.route = 'recipes/setup'
+
+  editWindow = genericWindowFactory(config)
+
+  return editWindow
+} }
