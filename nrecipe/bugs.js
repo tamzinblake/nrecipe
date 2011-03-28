@@ -8,21 +8,20 @@ var template = require('./template')
              , remove : remove
              }
 
-function reroute (req, res, path, db) {
+function reroute (req, res, path) {
   var route = routes[path[2]]
   if (route == undefined) {
     route = error.reroute
   }
-  route(req,res,path,db)
+  route(req,res,path)
 }
 
 function view (req,res,path,db) {
   res.send(template.process('bugs', {title: 'Bug tracker'}, 'extjs'))
 }
 
-function list (req,res,path,db) {
-  var bugs = db.collection('bugs')
-  dbi.fetch( bugs
+function list (req,res,path) {
+  dbi.fetch( dbi.Bug
            , { start: req.body.start
              , limit: req.body.limit || 50
              , dir  : req.body.dir == 'DESC' ? -1 : 1
@@ -34,31 +33,28 @@ function list (req,res,path,db) {
            )
 }
 
-function replace (req,res,path,db) {
-  var bugs = db.collection('bugs')
-    , modified = util.dateTime()
-  bugs.save( { _id: dbi.ObjectID(req.body._id) || undefined
-             , description: req.body.description
-             , name: req.body.name
-             , type: req.body.type
-             , modified: modified
-             }
-           , function (err) {
-               if (err != null) console.log(err)
-               res.send({success: err == null})
-             }
-           )
+function replace (req,res,path) {
+  var doc = req.body.doc
+  doc.modified = util.dateTime()
+
+  dbi.save( dbi.Bug
+          , doc
+          , function (err) {
+              if (err != null) console.log(err)
+              res.send({success: err == null})
+            }
+          )
 }
 
-function remove (req,res,path,db) {
-  var bugs = db.collection('bugs')
-  bugs.remove( { _id: dbi.ObjectID(req.body._id)
-               }
-             , function (err) {
-                 if (err != null) console.log(err)
-                 res.send({success: err == null})
-               }
-             )
+function remove (req,res,path) {
+  var doc = req.body.doc
+  dbi.remove( dbi.Bug
+            , doc
+            , function (err) {
+                if (err != null) console.log(err)
+                res.send({success: err == null})
+              }
+            )
 }
 
 this.reroute = reroute

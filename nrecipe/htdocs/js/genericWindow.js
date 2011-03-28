@@ -16,9 +16,12 @@ function genericWindowFactory(config){ with(config){
     , buttons: [ closeButton
                , { text: 'Submit'
                  , handler: function () {
+                     Ext.apply(getSelected().data, editPanel.getForm())
+                     
+
                      editPanel.getForm().submit(
                        { url: '/nrecipe/' + route + '/replace'
-                       , params: {}
+                       , params: {doc: getSelected().data}
                        , failure: failureForm
                        , success: function(form, action) {
                            if (editWindow.state =='editing') {
