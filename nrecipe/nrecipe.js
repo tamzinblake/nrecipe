@@ -1,5 +1,4 @@
-var Mongolian = require('../lib/mongolian')
-  , routes = { index       : require('./index')
+var routes = { index       : require('./index')
              , bugs        : require('./bugs')
              , error       : require('./error')
              , ingredients : require('./ingredients')
@@ -17,10 +16,7 @@ function reroute (req, res) {
     route = routes['error']
   }
 
-  var server = new Mongolian
-  var db = server.db('nrecipe')
-
-  route.reroute(req,res,path,db)
+  route.reroute(req,res,path)
 }
 
 function split_params (params) {
