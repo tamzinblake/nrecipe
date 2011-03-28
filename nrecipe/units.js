@@ -64,7 +64,9 @@ function remove (req,res,path,db) {
 
 function search (req,res,path,db) {
   db.collection('units')
-    .find({$where: 'this.name =~ ' . req.body.query }, {_id: 1, name: 1})
+    .find( {$where: 'this.name.match("' + req.body.query +'")' }
+         , {_id: 1, name: 1}
+         )
     .limit(100)
     .toArray( function (err, array) {
        res.send({rows: array})

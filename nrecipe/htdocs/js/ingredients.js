@@ -6,13 +6,14 @@ Ext.onReady(function () {
   var body = Ext.getBody()
 
   var Record = Ext.data.Record.create(
-    [ {name: '_id'          , mapping: 0, sortType: notNull}
-    , {name: 'name'        , mapping: 1, sortType: notNull}
-    , {name: 'density'     , mapping: 2, sortType: notNull}
-    , {name: 'unitId'     , mapping: 3, sortType: notNull}
-    , {name: 'unit'        , mapping: 4, sortType: notNull}
-    , {name: 'shopUnitId', mapping: 5, sortType: notNull}
-    , {name: 'shopUnit'   , mapping: 6, sortType: notNull}
+    [ {name: '_id'       , sortType: notNull}
+    , {name: 'name'      , sortType: notNull}
+    , {name: 'density'   , sortType: notNull}
+    , {name: 'unitId'    , sortType: notNull}
+    , {name: 'unit'      , sortType: notNull}
+    , {name: 'shopUnitId', sortType: notNull}
+    , {name: 'shopUnit'  , sortType: notNull}
+    , {name: 'modified'  , sortType: notNull}
     ]
   )
 
@@ -162,6 +163,11 @@ Ext.onReady(function () {
           , dataIndex: 'shopUnit'
           , sortable : true
           }
+        , { header   : 'Modified'
+          , width  : 160
+          , dataIndex: 'modified'
+          , sortable : true
+          }
         ]
     , defaults: { renderer: 'htmlEncode'
                 }
@@ -236,76 +242,61 @@ function ingredientWindowFactory (config) { with (config) {
   Ext.QuickTips.init()
 
   var comboRecord = new Ext.data.Record.create(
-    [ { name: 'description', mapping: 0 }
+    [ 'name'
+    , '_id'
     ]
   )
 
-  var unitReader = new Ext.data.JsonReader
-    ( { totalProperty: 'totalcount'
-      , root: 'rows'
-      }
-    , comboRecord
-    )
-
-  var unitStore = new Ext.data.Store(
-    { proxy: new Ext.data.HttpProxy(
-        { url: '/nrecipe/units/search'
-        , method : 'post'
-        }
-      )
+  var unitStore = new Ext.data.JsonStore(
+    { url: '/nrecipe/units/search'
+    , totalProperty: 'totalcount'
+    , root: 'rows'
+    , idProperty: '_id'
     , baseParams: { searchAnywhere: true
-    }
+                  }
     , listeners: { exception: failureStore
                  }
-    , reader: unitReader
+    , fields: comboRecord
     }
   )
 
   var unitCombo = new AddComboBox(
     { store: unitStore
-    , displayField: 'description'
-    , valueField: 'description'
-    , hiddenName: 'unit'
+    , displayField: 'name'
+    , valueField: '_id'
+    , hiddenName: 'unitId'
     , triggerAction: 'query'
     , minChars: 0
     , anchor:'100%'
     , mode:'remote'
-    , id: 'unitId'
+    , id: 'unit'
     , fieldLabel: 'Default units'
     }
   )
 
-  var shopUnitReader = new Ext.data.JsonReader
-    ( { totalProperty: 'totalcount'
-      , root: 'rows'
-      }
-    , comboRecord
-    )
-
-  var shopUnitStore = new Ext.data.Store(
-    { proxy: new Ext.data.HttpProxy(
-        { url: '/nrecipe/units/search'
-        , method : 'post'
-        }
-      )
-      , baseParams: { searchAnywhere: true
-                    }
-      , listeners: { exception: failureStore
-                   }
-      , reader: shopUnitReader
+  var shopUnitStore = new Ext.data.JsonStore(
+    { url: '/nrecipe/units/search'
+    , totalProperty: 'totalcount'
+    , root: 'rows'
+    , idProperty: '_id'
+    , baseParams: { searchAnywhere: true
+                  }
+    , listeners: { exception: failureStore
+                 }
+    , fields: comboRecord
     }
   )
 
   var shopUnitCombo = new AddComboBox(
     { store: shopUnitStore
-    , displayField: 'description'
-    , valueField: 'description'
-    , hiddenName: 'shopUnit'
+    , displayField: 'name'
+    , valueField: '_id'
+    , hiddenName: 'shopUnitId'
     , triggerAction: 'query'
     , minChars: 0
     , anchor:'100%'
     , mode:'remote'
-    , id: 'shopUnitId'
+    , id: 'shopUnit'
     , fieldLabel: 'Shop units'
     }
   )
