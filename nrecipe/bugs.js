@@ -34,27 +34,34 @@ function list (req,res,path) {
 }
 
 function replace (req,res,path) {
-  var doc = req.body.doc
-  doc.modified = util.dateTime()
-
-  dbi.save( dbi.Bug
-          , doc
-          , function (err) {
-              if (err != null) console.log(err)
-              res.send({success: err == null})
-            }
-          )
-}
-
-function remove (req,res,path) {
-  var doc = req.body.doc
-  dbi.remove( dbi.Bug
+  if (req.body && req.body.doc) {
+    var doc = JSON.parse(req.body.doc)
+    dbi.save( dbi.Bug
             , doc
             , function (err) {
                 if (err != null) console.log(err)
                 res.send({success: err == null})
               }
             )
+  }
+  else {
+    res.send({success: false})
+  }
+}
+
+function remove (req,res,path) {
+  if (req.body) {
+    dbi.remove( dbi.Bug
+              , req.body._id
+              , function (err) {
+                  if (err != null) console.log(err)
+                  res.send({success: err == null})
+                }
+              )
+  }
+  else {
+    res.send({success: false})
+  }
 }
 
 this.reroute = reroute

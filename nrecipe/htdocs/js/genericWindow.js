@@ -16,21 +16,25 @@ function genericWindowFactory(config){ with(config){
     , buttons: [ closeButton
                , { text: 'Submit'
                  , handler: function () {
-                     Ext.apply(getSelected().data, editPanel.getForm())
-                     
-
-                     editPanel.getForm().submit(
+                     var doc = (getSelected() && getSelected().data)
+                             ? getSelected().data
+                             : {}
+                     Ext.apply(doc,editPanel.getForm().getValues())
+                     Ext.Ajax.request(
                        { url: '/nrecipe/' + route + '/replace'
-                       , params: {doc: getSelected().data}
-                       , failure: failureForm
-                       , success: function(form, action) {
-                           if (editWindow.state =='editing') {
-                             editWindow.fireEvent('goFinished')
-                           }
-                           else if (editWindow.state =='adding') {
-                             editWindow.fireEvent('goAdding')
+                       , success: function (response,options) {
+                           if (successAjax(response,options)) {
+                             if (editWindow.state =='editing') {
+                               editWindow.fireEvent('goFinished')
+                             }
+                             else if (editWindow.state =='adding') {
+                               editWindow.fireEvent('goAdding')
+                             }
                            }
                          }
+                       , failure: failureAjax
+                       , params: { doc: Ext.encode(doc)
+                                 }
                        }
                      )
                    }

@@ -1,7 +1,7 @@
 var mongoose = require('mongoose')
   , util = require('../lib/util')
 
-mongoose.connect('mongodb://localhost/my_database');
+mongoose.connect('mongodb://localhost/nrecipe');
 this.ObjectId = mongoose.Schema.ObjectId
 
 var BugSchema = new mongoose.Schema(
@@ -9,20 +9,20 @@ var BugSchema = new mongoose.Schema(
   , name: String
   , type: String
   , description : String
-  , modified: Date
+  , modified: {type: Date, default: Date.now}
   }
 )
 
 mongoose.model('Bug', BugSchema)
 this.Bug = mongoose.model('Bug')
 
-function fetch (model, config, callback) {
+function fetch (Model, config, callback) {
   var callbacks = 0
     , response = { success: true }
     , sortInfo = {}
   sortInfo[config.sort] = config.dir
 
-  model.find( {}
+  Model.find( {}
             , []
             , { skip: config.start
               , limit: config.limit
@@ -34,7 +34,7 @@ function fetch (model, config, callback) {
               }
             )
 
-  model.count({}, function (err, result) {
+  Model.count({}, function (err, result) {
     response.totalcount = result
     respond(err)
   } )
@@ -55,16 +55,36 @@ function fetch (model, config, callback) {
   }
 }
 
-function save(model, doc, callback) {
-  var instance = new model()
-  util.apply(instance,doc)
-  instance.save(function (err) { callback(err) } )
+function save(Model, doc, callback) {
+  if (doc._id == null || doc._id == '') {
+    delete doc._id
+    var instance = new Model(doc)
+    instance.save(function (err) { callback(err) } )
+  }
+  else {
+    Model.findById(doc._id, function(err, d) {
+      delete doc._id
+      if (d == undefined) {
+        var instance = new Model(doc)
+        instance.save(function (err) { callback(err) } )
+      }
+      else {
+        util.apply(d,doc)
+        d.save(function (err) { callback(err) } )
+      }
+    } )
+  }
 }
 
-function remove(model, doc, callback) {
-  var instance = new model()
-  util.apply(instance,doc)
-  instance.remove(function (err) { callback(err) } )
+function remove(Model, id, callback) {
+  Model.findById(id, function(err, d) {
+    if (d == undefined) {
+      callback(err)
+    }
+    else {
+      d.remove(function (err) { callback(err) } )
+    }
+  } )
 }
 
 this.fetch = fetch
