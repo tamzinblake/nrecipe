@@ -10,6 +10,7 @@ Ext.onReady(function () {
       , {name: 'name'      , sortType: notNull}
       , {name: 'type'      , sortType: notNull}
       , {name: 'conversion', sortType: notNull}
+      , {name: 'created'   , sortType: notNull, convert: formatDate}
       ]
     )
 

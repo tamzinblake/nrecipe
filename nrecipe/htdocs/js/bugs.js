@@ -10,10 +10,6 @@ Ext.onReady(function () {
     ]
   )
 
-  function formatDate (v, rec) {
-    return (new Date(v)).format("Y-m-d H:i:s")
-  }
-
   var store = new Ext.data.JsonStore(
     { url: '/nrecipe/bugs/list'
     , fields: Record
