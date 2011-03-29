@@ -9,7 +9,7 @@ var BugSchema = new mongoose.Schema(
   , name: String
   , type: String
   , description : String
-  , created: {type: String, default: util.dateTime}
+  , created: {type: Date, default: Date.now}
   }
 )
 

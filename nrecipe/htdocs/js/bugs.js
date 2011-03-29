@@ -6,9 +6,13 @@ Ext.onReady(function () {
     , {name: 'name'       , sortType: notNull}
     , {name: 'type'       , sortType: notNull}
     , {name: 'description', sortType: notNull}
-    , {name: 'created'    , sortType: notNull}
+    , {name: 'created'    , sortType: notNull, convert: formatDate}
     ]
   )
+
+  function formatDate (v, rec) {
+    return (new Date(v)).format("Y-m-d H:i:s")
+  }
 
   var store = new Ext.data.JsonStore(
     { url: '/nrecipe/bugs/list'
