@@ -21,11 +21,12 @@ function view (req,res,path,db) {
 }
 
 function list (req,res,path) {
+  var body = req.body || {}
   dbi.fetch( dbi.Bug
-           , { start: req.body.start
-             , limit: req.body.limit || 50
-             , dir  : req.body.dir == 'DESC' ? -1 : 1
-             , sort : req.body.sort
+           , { start: body.start || 0
+             , limit: body.limit || 50
+             , dir  : body.dir == 'DESC' ? -1 : 1
+             , sort : body.sort || '_id'
              }
            , function (response) {
                res.send(response)
