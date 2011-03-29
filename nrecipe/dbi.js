@@ -9,7 +9,7 @@ var BugSchema = new mongoose.Schema(
   , name: String
   , type: String
   , description : String
-  , modified: {type: Date, default: Date.now}
+  , created: {type: String, default: util.dateTime}
   }
 )
 
@@ -50,12 +50,12 @@ function fetch (Model, config, callback) {
     }
     callbacks++
     if (callbacks == 2) {
-      callback( response )
+      callback(response)
     }
   }
 }
 
-function save(Model, doc, callback) {
+function save (Model, doc, callback) {
   if (doc._id == null || doc._id == '') {
     delete doc._id
     var instance = new Model(doc)
@@ -76,7 +76,7 @@ function save(Model, doc, callback) {
   }
 }
 
-function remove(Model, id, callback) {
+function remove (Model, id, callback) {
   Model.findById(id, function(err, d) {
     if (d == undefined) {
       callback(err)

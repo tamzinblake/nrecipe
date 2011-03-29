@@ -6,7 +6,7 @@ Ext.onReady(function () {
     , {name: 'name'       , sortType: notNull}
     , {name: 'type'       , sortType: notNull}
     , {name: 'description', sortType: notNull}
-    , {name: 'modified'   , sortType: notNull}
+    , {name: 'created'    , sortType: notNull}
     ]
   )
 
@@ -130,9 +130,9 @@ Ext.onReady(function () {
                  , dataIndex: 'description'
                  , sortable : false
                  }
-               , { header   : 'Modified'
+               , { header   : 'Created'
                  , width    : 160
-                 , dataIndex: 'modified'
+                 , dataIndex: 'created'
                  , sortable : true
                  }
                ]
