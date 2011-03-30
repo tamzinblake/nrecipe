@@ -18,6 +18,7 @@ var template = require('./template')
 function init (config) {
   Model = config.Model
   title = config.title
+  config.routes = config.routes || ['view','list','replace','remove']
   for (r in config.routes) {
     routes[config.routes[r]] = possible_routes[config.routes[r]]
   }

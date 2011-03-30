@@ -1,8 +1,7 @@
 var models = require('./models')
   , routes = { index       : require('./index')
              , bugs        : require('./crudFactory')(
-                 { routes: ['view','list','replace','remove']
-                 , Model: models.Bug
+                 { Model: models.Bug
                  , title: 'Bug tracker'
                  }
                )
@@ -11,7 +10,11 @@ var models = require('./models')
              , lists       : require('./lists')
              , js          : require('./sendfile')
              , recipes     : require('./recipes')
-             , units       : require('./units')
+             , units       : require('./crudFactory')(
+                 { Model: models.Unit
+                 , title: 'Units manager'
+                 }
+               )
              }
 
 function reroute (req, res) {
