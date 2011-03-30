@@ -28,9 +28,9 @@ var Ingredient = new mongoose.Schema(
   { _id : ObjectId
   , name: String
   , density : Number
-  , unit: Unit
-  , defaultUnit: Unit
-  , shopUnit: Unit
+  , unit: [Unit]
+  , defaultUnit: [Unit]
+  , shopUnit: [Unit]
   , amount: Number
   , created: {type: Date, default: Date.now}
   }
