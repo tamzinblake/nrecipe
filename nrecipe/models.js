@@ -1,7 +1,7 @@
 var mongoose = require('mongoose')
   , util = require('../lib/util')
 
-mongoose.connect('mongodb://localhost/nrecipe');
+mongoose.connect('mongodb://localhost/nrecipe')
 var ObjectId = mongoose.Schema.ObjectId
 
 var Bug = new mongoose.Schema(

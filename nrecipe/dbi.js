@@ -1,7 +1,7 @@
 var mongoose = require('mongoose')
   , util = require('../lib/util')
 
-mongoose.connect('mongodb://localhost/nrecipe');
+mongoose.connect('mongodb://localhost/nrecipe')
 
 function fetch (Model, config, callback) {
   var callbacks = 0
