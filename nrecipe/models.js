@@ -4,7 +4,7 @@ var mongoose = require('mongoose')
 mongoose.connect('mongodb://localhost/nrecipe');
 var ObjectId = mongoose.Schema.ObjectId
 
-var BugSchema = new mongoose.Schema(
+var Bug = new mongoose.Schema(
   { _id : ObjectId
   , name: String
   , type: String
@@ -12,8 +12,18 @@ var BugSchema = new mongoose.Schema(
   , created: {type: Date, default: Date.now}
   }
 )
+mongoose.model('Bug', Bug)
 
-mongoose.model('Bug', BugSchema)
+var Unit = new mongoose.Schema(
+  { _id : ObjectId
+  , name: String
+  , type: String
+  , conversion : Number
+  , created: {type: Date, default: Date.now}
+  }
+)
+mongoose.model('Unit', Unit)
 
 module.exports = { Bug: mongoose.model('Bug')
+                 , Unit: mongoose.model('Unit')
                  }
