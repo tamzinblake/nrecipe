@@ -31,13 +31,16 @@ Ext.onReady(function () {
 
   store.storeLoaded = false
 
-  var editWindow = unitWindowFactory
-    ( { getSelected: function () {
-    return store.selectedRecord
-        }
-      , loadStore: loadStore
+  var editWindow = unitWindowFactory(
+    { getSelected: function () {
+        return store.selectedRecord
       }
-    )
+    , loadForm: function (form, record) {
+        form.loadRecord(record)
+      }
+    , loadStore: loadStore
+    }
+  )
 
   var addButton = new Ext.Button(
     { text: 'New unit'

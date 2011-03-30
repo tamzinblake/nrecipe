@@ -6,14 +6,13 @@ Ext.onReady(function () {
   var body = Ext.getBody()
 
   var Record = Ext.data.Record.create(
-    [ {name: '_id'       , sortType: notNull}
-    , {name: 'name'      , sortType: notNull}
-    , {name: 'density'   , sortType: notNull}
-    , {name: 'unitId'    , sortType: notNull}
-    , {name: 'unit'      , sortType: notNull}
-    , {name: 'shopUnitId', sortType: notNull}
-    , {name: 'shopUnit'  , sortType: notNull}
-    , {name: 'modified'  , sortType: notNull}
+    [ {name: '_id'        , sortType: notNull}
+    , {name: 'name'       , sortType: notNull}
+    , {name: 'density'    , sortType: notNull}
+    , {name: 'defaultUnit', sortType: notNull}
+    , {name: 'unit'       , sortType: notNull}
+    , {name: 'shopUnit'   , sortType: notNull}
+    , {name: 'modified'   , sortType: notNull}
     ]
   )
 
@@ -35,6 +34,17 @@ Ext.onReady(function () {
   var editWindow = ingredientWindowFactory(
     { getSelected: function () {
         return store.selectedRecord
+      }
+    , loadForm: function (form, record) {
+        var doc = {}
+        Ext.apply(doc, record.data)
+        doc.defaultUnit = (doc.defaultUnit && doc.defaultUnit[0])
+                        ? doc.defaultUnit[0].name
+                        : ''
+        doc.shopUnit = (doc.shopUnit && doc.shopUnit[0])
+                        ? doc.shopUnit[0].name
+                        : ''
+        form.setValues(doc)
       }
     , loadStore:loadStore
     }
@@ -144,27 +154,29 @@ Ext.onReady(function () {
   var model = new Ext.grid.ColumnModel(
     { columns:
         [ { header   : 'Name'
-          , width  : 72
+          , width    : 72
           , dataIndex: 'name'
           , sortable : true
           }
         , { header   : 'Density'
-          , width  : 72
+          , width    : 72
           , dataIndex: 'density'
           , sortable : true
           }
         , { header   : 'Default unit'
-          , width  : 160
-          , dataIndex: 'unit'
+          , width    : 160
+          , dataIndex: 'defaultUnit'
           , sortable : true
+          , renderer : unitRenderer
           }
         , { header   : 'Shopping List unit'
-          , width  : 160
+          , width    : 160
           , dataIndex: 'shopUnit'
           , sortable : true
+          , renderer : unitRenderer
           }
         , { header   : 'Modified'
-          , width  : 160
+          , width    : 160
           , dataIndex: 'modified'
           , sortable : true
           }
@@ -173,6 +185,10 @@ Ext.onReady(function () {
                 }
     }
   )
+
+  function unitRenderer (value,metaData,record,rowIndex,colIndex,store) {
+    return value && value[0] && value[0].name ? value[0].name : ''
+  }
 
   var gridSelectionModel = new Ext.grid.RowSelectionModel(
     { singleSelect: true
@@ -242,8 +258,10 @@ function ingredientWindowFactory (config) { with (config) {
   Ext.QuickTips.init()
 
   var comboRecord = new Ext.data.Record.create(
-    [ 'name'
-    , '_id'
+    [ {name: '_id'       , sortType: notNull}
+    , {name: 'name'      , sortType: notNull}
+    , {name: 'type'      , sortType: notNull}
+    , {name: 'conversion', sortType: notNull}
     ]
   )
 
@@ -264,18 +282,20 @@ function ingredientWindowFactory (config) { with (config) {
     { store: unitStore
     , displayField: 'name'
     , valueField: '_id'
-    , hiddenName: 'unitId'
+    , hiddenName: '__unit'
     , triggerAction: 'query'
     , minChars: 0
     , anchor:'100%'
     , mode:'remote'
-    , id: 'unit'
+    , id: 'defaultUnit'
     , fieldLabel: 'Default units'
+    , listeners: { select: applyUnitFactory('defaultUnit')
+                 }
     }
   )
 
   var shopUnitStore = new Ext.data.JsonStore(
-    { url: '/nrecipe/units/search'
+    { url: '/nrecipe/units/list'
     , totalProperty: 'totalcount'
     , root: 'rows'
     , idProperty: '_id'
@@ -291,15 +311,26 @@ function ingredientWindowFactory (config) { with (config) {
     { store: shopUnitStore
     , displayField: 'name'
     , valueField: '_id'
-    , hiddenName: 'shopUnitId'
+    , hiddenName: '__shopUnit'
     , triggerAction: 'query'
     , minChars: 0
     , anchor:'100%'
     , mode:'remote'
     , id: 'shopUnit'
     , fieldLabel: 'Shop units'
+    , listeners: { select: applyUnitFactory('shopUnit')
+                 }
     }
   )
+
+  function applyUnitFactory(field) {
+    return function (combo, record, index) {
+      var doc = (config.getSelected() && config.getSelected().data)
+              ? config.getSelected().data
+              : {}
+      doc[field] = record.data
+    }
+  }
 
   var fieldSet = new Ext.form.FieldSet(
     { border: false

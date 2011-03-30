@@ -19,7 +19,13 @@ function genericWindowFactory(config){ with(config){
                      var doc = (getSelected() && getSelected().data)
                              ? getSelected().data
                              : {}
-                     Ext.apply(doc,editPanel.getForm().getValues())
+                     var values = editPanel.getForm().getValues()
+                     Ext.apply(doc,values)
+                     for (p in doc) {
+                       if (p.match(/^__/) || p == 'modified') {
+                         delete doc[p]
+                       }
+                     }
                      Ext.Ajax.request(
                        { url: '/nrecipe/' + route + '/replace'
                        , success: function (response,options) {
@@ -101,7 +107,7 @@ function genericWindowFactory(config){ with(config){
     editWindow.state = 'editing'
     closeButton.setText('Cancel')
     editWindow.setTitle('Edit')
-    editPanel.getForm().loadRecord(getSelected())
+    loadForm(editPanel.getForm(), getSelected())
   } )
 
   editWindow.addListener('goFinished', function () {

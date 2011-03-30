@@ -31,6 +31,9 @@ Ext.onReady(function () {
     { getSelected: function () {
         return store.selectedRecord
       }
+    , loadForm: function (form, record) {
+        form.loadRecord(record)
+      }
     , loadStore: loadStore
     }
   )
