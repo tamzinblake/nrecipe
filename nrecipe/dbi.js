@@ -9,7 +9,7 @@ function fetch (Model, config, callback) {
     , sortInfo = {}
   sortInfo[config.sort] = config.dir
 
-  Model.find( {}
+  Model.find( config.query ? {name: config.query} : {}
             , []
             , { skip: config.start
               , limit: config.limit

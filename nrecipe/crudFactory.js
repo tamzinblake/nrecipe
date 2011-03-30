@@ -13,7 +13,6 @@ var template = require('./template')
                       , list: list
                       , replace: replace
                       , remove: remove
-                      , search: search
                       }
 
 function init (config) {
@@ -39,11 +38,16 @@ function view (req,res,path,db) {
 
 function list (req,res,path) {
   var body = req.body || {}
+    , query
+  if (body.query) {
+    query = (body.searchAnywhere ? '.*' : '^' ) + body.query + '.*'
+  }
   dbi.fetch( Model
            , { start: body.start || 0
              , limit: body.limit || 50
              , dir  : body.dir == 'DESC' ? -1 : 1
              , sort : body.sort || '_id'
+             , query: query
              }
            , function (response) {
                res.send(response)
@@ -80,8 +84,4 @@ function remove (req,res,path) {
   else {
     res.send({success: false})
   }
-}
-
-function search (req,res,path) {
-
 }

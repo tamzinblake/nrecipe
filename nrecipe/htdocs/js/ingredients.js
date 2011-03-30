@@ -248,7 +248,7 @@ function ingredientWindowFactory (config) { with (config) {
   )
 
   var unitStore = new Ext.data.JsonStore(
-    { url: '/nrecipe/units/search'
+    { url: '/nrecipe/units/list'
     , totalProperty: 'totalcount'
     , root: 'rows'
     , idProperty: '_id'
