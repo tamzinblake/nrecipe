@@ -1,15 +1,27 @@
 var models = require('./models')
   , routes = { index       : require('./index')
+             , error       : require('./error')
+             , js          : require('./sendfile')
              , bugs        : require('./crudFactory')(
                  { Model: models.Bug
                  , title: 'Bug tracker'
                  }
                )
-             , error       : require('./error')
-             , ingredients : require('./ingredients')
-             , lists       : require('./lists')
-             , js          : require('./sendfile')
-             , recipes     : require('./recipes')
+             , ingredients : require('./crudFactory')(
+                 { Model: models.Ingredient
+                 , title: 'Ingredients manager'
+                 }
+               )
+             , lists       : require('./crudFactory')(
+                 { Model: models.List
+                 , title: 'List builder'
+                 }
+               )
+             , recipes     : require('./crudFactory')(
+                 { Model: models.Recipe
+                 , title: 'Recipe manager'
+                 }
+               )
              , units       : require('./crudFactory')(
                  { Model: models.Unit
                  , title: 'Units manager'

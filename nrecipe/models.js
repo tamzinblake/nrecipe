@@ -24,6 +24,42 @@ var Unit = new mongoose.Schema(
 )
 mongoose.model('Unit', Unit)
 
-module.exports = { Bug: mongoose.model('Bug')
-                 , Unit: mongoose.model('Unit')
+var Ingredient = new mongoose.Schema(
+  { _id : ObjectId
+  , name: String
+  , density : Number
+  , unit: Unit
+  , defaultUnit: Unit
+  , shopUnit: Unit
+  , amount: Number
+  , created: {type: Date, default: Date.now}
+  }
+)
+mongoose.model('Ingredient', Ingredient)
+
+var Recipe = new mongoose.Schema(
+  { _id : ObjectId
+  , name: String
+  , amount: Number
+  , ingredients: [Ingredient]
+  , created: {type: Date, default: Date.now}
+  }
+)
+mongoose.model('Recipe', Recipe)
+
+var List = new mongoose.Schema(
+  { _id : ObjectId
+  , name: String
+  , recipes: [Recipe]
+  , ingredients: [Ingredient]
+  , created: {type: Date, default: Date.now}
+  }
+)
+mongoose.model('List', List)
+
+module.exports = { Bug       : mongoose.model('Bug')
+                 , Ingredient: mongoose.model('Ingredient')
+                 , List      : mongoose.model('List')
+                 , Recipe    : mongoose.model('Recipe')
+                 , Unit      : mongoose.model('Unit')
                  }
