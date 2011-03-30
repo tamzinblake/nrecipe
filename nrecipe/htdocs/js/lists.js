@@ -128,7 +128,7 @@ Ext.onReady(function () {
           }
         }
     , items:
-        [ '<a href="/recipe/index.html">Back to menu</a>'
+        [ '<a href="/nrecipe">Back to menu</a>'
         , '-'
         , addButton
         , '-'
