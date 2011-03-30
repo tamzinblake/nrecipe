@@ -2,19 +2,6 @@ var mongoose = require('mongoose')
   , util = require('../lib/util')
 
 mongoose.connect('mongodb://localhost/nrecipe');
-this.ObjectId = mongoose.Schema.ObjectId
-
-var BugSchema = new mongoose.Schema(
-  { _id : this.ObjectId
-  , name: String
-  , type: String
-  , description : String
-  , created: {type: Date, default: Date.now}
-  }
-)
-
-mongoose.model('Bug', BugSchema)
-this.Bug = mongoose.model('Bug')
 
 function fetch (Model, config, callback) {
   var callbacks = 0
@@ -87,6 +74,8 @@ function remove (Model, id, callback) {
   } )
 }
 
-this.fetch = fetch
-this.save = save
-this.remove = remove
+module.exports = { fetch: fetch
+                 , save: save
+                 , remove: remove
+                 , mongoose: mongoose
+                 }

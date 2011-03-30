@@ -7,4 +7,4 @@ function view (req, res, path) {
   res.send(template.process('error'))
 }
 
-this.reroute = reroute
+module.exports = reroute

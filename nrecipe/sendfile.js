@@ -1,3 +1,5 @@
+module.exports = reroute
+
 var error = require('./error')
   , siteConfig = require('./siteConfig')
   , routes = { js  : 'js/'
@@ -19,5 +21,3 @@ function reroute (req, res, path) {
     res.sendfile(siteConfig.htdocsRoot + route + filename.input)
   }
 }
-
-this.reroute = reroute

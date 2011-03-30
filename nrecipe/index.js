@@ -1,3 +1,5 @@
+module.exports = reroute
+
 var template = require('./template')
 
 function reroute (req, res, path) {
@@ -7,5 +9,3 @@ function reroute (req, res, path) {
 function view (req, res, path) {
   res.send(template.process('index', {title: 'List creator'}))
 }
-
-this.reroute = reroute

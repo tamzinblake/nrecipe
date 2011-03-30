@@ -9,21 +9,21 @@ var template = require('./template')
              , search : search
              }
 
-function reroute (req, res, path, db) {
+function reroute (req, res, path) {
   var route = routes[path[2]]
   if (route == undefined) {
     route = error.reroute
   }
-  route(req,res,path,db)
+  route(req,res,path)
 }
 
-function view (req,res,path,db) {
+function view (req,res,path) {
   res.send(template.process('units', {title: 'Units manager'}, 'extjs'))
 }
 
-function list (req,res,path,db) {
-  var units = db.collection('units')
-  dbi.fetch( units
+function list (req,res,path) {
+  var body = req.body || {}
+  dbi.fetch( dbi.Units
            , { start: req.body.start
              , limit: req.body.limit || 50
              , dir  : req.body.dir == 'DESC' ? -1 : 1

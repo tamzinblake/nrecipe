@@ -1,5 +1,11 @@
-var routes = { index       : require('./index')
-             , bugs        : require('./bugs')
+var models = require('./models')
+  , routes = { index       : require('./index')
+             , bugs        : require('./crudFactory')(
+                 { routes: ['view','list','replace','remove']
+                 , Model: models.Bug
+                 , title: 'Bug tracker'
+                 }
+               )
              , error       : require('./error')
              , ingredients : require('./ingredients')
              , lists       : require('./lists')
@@ -16,7 +22,7 @@ function reroute (req, res) {
     route = routes['error']
   }
 
-  route.reroute(req,res,path)
+  route(req,res,path)
 }
 
 function split_params (params) {
