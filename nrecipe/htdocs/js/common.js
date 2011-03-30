@@ -14,7 +14,7 @@ userWindowGroup.zseed = 9000
 //utils
 
 function formatDate (v, rec) {
-  return (new Date(v)).format("Y-m-d H:i:s")
+  return (new Date(v)).format('Y-m-d H:i:s')
 }
 
 //
