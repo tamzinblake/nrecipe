@@ -1,4 +1,4 @@
-function genericWindowFactory(config){ with(config){
+function genericWindowFactory(config){
   Ext.QuickTips.init()
 
   var closeButton = new Ext.Button(
@@ -11,13 +11,19 @@ function genericWindowFactory(config){ with(config){
 
   var editPanel = new Ext.form.FormPanel(
     { buttonAlign: 'center'
-    , items: [ fieldSet
+    , region: 'center'
+    , items: [ config.fieldSet
              ]
     , buttons: [ closeButton
                , { text: 'Submit'
                  , handler: function () {
-                     var doc = (getSelected() && getSelected().data)
-                             ? getSelected().data
+                     if (config.beforeSubmit) {
+                       config.beforeSubmit(config.getSelected(), config.store)
+                     }
+                     var doc = ( config.getSelected()
+                              && config.getSelected().data
+                               )
+                             ? config.getSelected().data
                              : {}
                      var values = editPanel.getForm().getValues()
                      Ext.apply(doc,values)
@@ -27,7 +33,7 @@ function genericWindowFactory(config){ with(config){
                        }
                      }
                      Ext.Ajax.request(
-                       { url: '/nrecipe/' + route + '/replace'
+                       { url: '/nrecipe/' + config.route + '/replace'
                        , success: function (response,options) {
                            if (successAjax(response,options)) {
                              if (editWindow.state =='editing') {
@@ -50,15 +56,15 @@ function genericWindowFactory(config){ with(config){
   )
 
   var editWindow = new Ext.Window(
-    { width: width
-    , height: height
+    { width: config.width
+    , height: config.height
     , title: 'Edit'
     , y: 25
     , manager: userWindowGroup
     , modal: true
-    , layout: 'fit'
+    , layout: config.layout || 'fit'
     , closeAction: 'hide'
-    , items: editPanel
+    , items: config.item ? [config.item, editPanel] : editPanel
     , openAdd: function () {
         editWindow.fireEvent('goLoading', 'goAdding')
       }
@@ -95,7 +101,7 @@ function genericWindowFactory(config){ with(config){
   editWindow.addListener('goAdding', function () {
     editWindow.show()
     editPanel.getForm().reset()
-    loadStore()
+    config.loadStore()
     editWindow.state = 'adding'
     closeButton.setText('Close')
     editWindow.setTitle('Add')
@@ -107,14 +113,14 @@ function genericWindowFactory(config){ with(config){
     editWindow.state = 'editing'
     closeButton.setText('Cancel')
     editWindow.setTitle('Edit')
-    loadForm(editPanel.getForm(), getSelected())
+    config.loadForm(editPanel.getForm(), config.getSelected())
   } )
 
   editWindow.addListener('goFinished', function () {
     editWindow.state = 'finished'
     editWindow.hide()
-    loadStore()
+    config.loadStore()
   } )
 
   return editWindow
-} }
+}

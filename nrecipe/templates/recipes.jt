@@ -4,6 +4,7 @@ $(IMPORT (footer))
 $(WRAP header()
 ${ extjs() }
 <script type="text/javascript" src="/nrecipe/js/genericWindow.js?${new Date().valueOf()}"></script>
+<script type="text/javascript" src="/nrecipe/js/localWindow.js?${new Date().valueOf()}"></script>
 <script type="text/javascript" src="/nrecipe/js/recipes.js?${new Date().valueOf()}"></script>
 $)
 ${ footer() }
