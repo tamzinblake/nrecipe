@@ -40,7 +40,7 @@ Ext.onReady(function () {
   )
 
   var addButton = new Ext.Button(
-    { text: 'New Recipe'
+    { text: 'New recipe'
     , listeners:
         { click: function () {
             editWindow.openAdd()
@@ -56,7 +56,7 @@ Ext.onReady(function () {
   }
 
   var editButton = new Ext.Button(
-    { text: 'Change name'
+    { text: 'Edit'
     , disabled: true
     , listeners: { click: doEdit
                  }
@@ -86,20 +86,6 @@ Ext.onReady(function () {
     }
     clearSelection()
   } )
-
-  var openButton = new Ext.Button(
-    { text: 'Edit recipe'
-    , disabled: true
-    }
-  )
-
-  var openRecipe = function () {
-    if (store.selectedRecord) {
-      window.location.href='/nrecipe/recipe/ingredients/view/'+store.selectedRecord.data._id
-    }
-  }
-
-  openButton.on('click',openRecipe)
 
   function clearSelection () {
     if (grid) {
@@ -207,7 +193,7 @@ Ext.onReady(function () {
     , enableColumnHide : false
     , stateful: true
     , stateId: 'recipeGridState'
-    , listeners: { rowdblclick: openRecipe
+    , listeners: { rowdblclick: doEdit
                  }
     , viewConfig:
         { forceFit: true
@@ -352,7 +338,7 @@ function recipeWindowFactory (config) {
     }
 
     var editButton = new Ext.Button(
-      { text: 'Edit amount'
+      { text: 'Edit'
       , disabled: true
       , listeners: { click: doEdit
                    }
