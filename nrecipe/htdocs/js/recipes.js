@@ -303,11 +303,11 @@ function recipeWindowFactory (config) {
       , loadForm: function (form, record) {
           var doc = {}
           Ext.apply(doc, record.data)
-          doc.unit = doc.unit
-                   ? doc.unit.name
+          doc.unit = (doc.unit && doc.unit[0])
+                   ? doc.unit[0].name
                    : ''
-          doc.ingredient = doc.ingredient
-                         ? doc.ingredient.name
+          doc.ingredient = doc.name
+                         ? doc.name
                          : ''
           form.setValues(doc)
         }
@@ -530,8 +530,10 @@ function recipeWindowFactory (config) {
     var ingredientRecord = Ext.data.Record.create(
       [ {name: '_id'        , sortType: notNull}
       , {name: 'name'       , sortType: notNull}
+      , {name: 'amount'     , sortType: notNull}
       , {name: 'density'    , sortType: notNull}
       , {name: 'defaultUnit', sortType: notNull}
+      , {name: 'unit'       , sortType: notNull}
       , {name: 'shopUnit'   , sortType: notNull}
       , {name: 'modified'   , sortType: notNull}
       ]

@@ -21,14 +21,16 @@ function localWindowFactory(config){
                              ? (config.getSelected().data || {})
                              : {}
                      var values = editPanel.getForm().getValues()
-                     Ext.apply(doc,values)
+                     Ext.apply(doc,values.ingredient)
+                     doc.amount = values.amount
+                     doc.unit = values.unit
                      for (p in doc) {
                        if (p.match(/^__/) || p == 'modified') {
                          delete doc[p]
                        }
                      }
                      var located = config.store.findBy(function (record, id) {
-                       return record.data.ingredient._id == doc.ingredient._id
+                       return record.data._id == doc.ingredient._id
                      })
                      if (located >= 0) {
                        Ext.apply(config.store.getAt(located).data, doc)
