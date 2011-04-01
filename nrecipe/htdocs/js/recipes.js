@@ -123,8 +123,6 @@ Ext.onReady(function () {
         , '-'
         , deleteButton
         , '-'
-        , openButton
-        , '-'
         , '->'
         , '-'
         , 'Recipe browser'
@@ -168,14 +166,12 @@ Ext.onReady(function () {
             store.selectedRecord = null
             deleteButton.disable()
             editButton.disable()
-            openButton.disable()
           }
         , rowselect: function (sm,rowIndex,r) {
             store.selectedRecord = r
             if (store.selectedRecord) {
               deleteButton.enable()
               editButton.enable()
-              openButton.enable()
             }
           }
         }
