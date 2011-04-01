@@ -596,7 +596,7 @@ function recipeWindowFactory (config) {
 
     config = config || {}
     config.width = 550
-    config.height = 400
+    config.height = 200
     config.fieldSet = fieldSet
 
     editWindow = localWindowFactory(config)

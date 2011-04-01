@@ -52,7 +52,7 @@ function localWindowFactory(config){
     { width: config.width
     , height: config.height
     , title: 'Edit'
-    , y: 25
+    , y: 50
     , manager: userWindowGroup
     , modal: true
     , layout: config.layout || 'fit'
