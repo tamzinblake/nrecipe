@@ -349,7 +349,7 @@ function recipeWindowFactory (config) {
 
     deleteButton.on('click', function () {
       if (store.selectedRecord) {
-        store.remove(selectedRecord)
+        store.remove(store.selectedRecord)
       }
       clearSelection()
     } )
