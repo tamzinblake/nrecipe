@@ -1,9 +1,9 @@
 var siteConfig = require('./siteConfig')
   , y = require('../lib/yajet')
-  , yajet = new y.YAJET()
+  , yajet = new y()
   , fs = require('fs')
 
-var templates = 
+var templates =
   { index       : function() { return readTemplate('index') }
   , error       : function() { return '404 not found' }
   , bugs        : function() { return readTemplate('bugs') }

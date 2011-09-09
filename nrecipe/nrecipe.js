@@ -49,4 +49,4 @@ function split_params (params) {
   }
 }
 
-this.reroute = reroute
+module.exports = reroute

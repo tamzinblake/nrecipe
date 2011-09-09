@@ -15,7 +15,7 @@ function reroute (req, res, path) {
   }
 
   if (route == undefined || filename == null) {
-    error.reroute(req,res,path)
+    error(req,res,path)
   }
   else {
     res.sendfile(siteConfig.htdocsRoot + route + filename.input)
