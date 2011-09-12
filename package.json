@@ -13,4 +13,7 @@
 , "directories" :
   { "lib" : "./lib"
   }
+, "dependencies" :
+  { "mongoose" : "*"
+  }
 }
