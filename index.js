@@ -1,17 +1,52 @@
-var express = require('express')
-var conf = require('./etc/conf.js')
+var models = require('./lib/models')
+  , routes = { index       : require('./lib/index')
+             , error       : require('./lib/error')
+             , js          : require('./lib/sendfile')
+             , bugs        : require('./lib/crudFactory')(
+                 { Model: models.Bug
+                 , title: 'Bug tracker'
+                 }
+               )
+             , ingredients : require('./lib/crudFactory')(
+                 { Model: models.Ingredient
+                 , title: 'Ingredients manager'
+                 }
+               )
+             , lists       : require('./lib/crudFactory')(
+                 { Model: models.List
+                 , title: 'List builder'
+                 }
+               )
+             , recipes     : require('./lib/crudFactory')(
+                 { Model: models.Recipe
+                 , title: 'Recipe manager'
+                 }
+               )
+             , units       : require('./lib/crudFactory')(
+                 { Model: models.Unit
+                 , title: 'Units manager'
+                 }
+               )
+             }
 
-var app = express.createServer( express.bodyParser() )
+function reroute (req, res) {
+  var path = split_params(req.params[0])
+    , route = routes[path[1]]
 
-for (var i = 0; i < conf.routes.length; i++) {
-  var route = conf.routes[i]
-  var method = route.method.match(/^(get|post)$/i) ? route.method.toLowerCase()
-             : 'get'
-  app[method]( route.path
-             , route.action !== undefined ? route.action : function (req, res) {
-                 require(conf.route_root + route.name)(req, res, route.method)
-               }
-             )
+  if (route == undefined) {
+    route = routes['error']
+  }
+
+  route(req,res,path)
 }
 
-app.listen(conf.port || 3000)
+function split_params (params) {
+  if (params == undefined) {
+    return ['','index']
+  }
+  else {
+    return params.split(/\//)
+  }
+}
+
+module.exports = reroute
