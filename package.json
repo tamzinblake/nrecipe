@@ -1,4 +1,4 @@
-{ "name": "nserver"
+{ "name": "nrecipe"
 , "author" : "Thom Blake <thethomblake@gmail.com> (http://thomblake.com)"
 , "description" : "Single-user shopping list web app for nserver"
 , "keywords" : [ "nserver", "shopping", "list" ]
