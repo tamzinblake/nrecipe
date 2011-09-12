@@ -2,7 +2,7 @@
 , "author" : "Thom Blake <thethomblake@gmail.com> (http://thomblake.com)"
 , "description" : "Single-user shopping list web app for nserver"
 , "keywords" : [ "nserver", "shopping", "list" ]
-, "version" : "0.0.2"
+, "version" : "0.0.3"
 , "repository" :
   { "type" : "git"
   , "url" : "https://github.com/thomblake/nrecipe.git"
@@ -15,5 +15,7 @@
   }
 , "dependencies" :
   { "mongoose" : "*"
+  , "yajet" : "*"
+  , "nserver-util" : "*"
   }
 }
