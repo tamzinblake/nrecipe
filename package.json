@@ -1,0 +1,16 @@
+{ "name": "nserver"
+, "author" : "Thom Blake <thethomblake@gmail.com> (http://thomblake.com)"
+, "description" : "Single-user shopping list web app for nserver"
+, "keywords" : [ "nserver", "shopping", "list" ]
+, "version" : "0.0.0"
+, "repository" :
+  { "type" : "git"
+  , "url" : "https://github.com/thomblake/nrecipe.git"
+  }
+, "bugs" :
+  { "web" : "http://github.com/thomblake/nrecipe/issues"
+  }
+, "directories" :
+  { "lib" : "./lib"
+  }
+}
